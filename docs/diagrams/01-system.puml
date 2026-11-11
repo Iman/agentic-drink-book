@@ -1,0 +1,58 @@
+@startuml
+title Policy-gated chatbot: trust boundaries
+skinparam shadowing false
+skinparam componentStyle rectangle
+left to right direction
+actor "Local operator" as user
+actor "Local browser\nuntrusted messages" as browser
+rectangle "Host boundary: trusted OS account" #E8F0FA {
+  component "Python terminal\ncli.py" as cli
+  component "React interface + FastAPI\nloopback port 8000\nweb.py" as web
+  package "Application enforcement" #EDF7ED {
+    component "Ownership checks\nrate limit + admission cap" as ingress
+    component "Acyclic LangGraph\ninput and output gates" as graph
+    component "Provider adapters\ndeadlines + circuit breakers" as adapters
+    database "Process-local context\nowner-bound sessions\nexplicit readers + TTL" as context
+    file "Immutable policy\nversion + SHA-256" as policy
+    collections "Bounded metadata audit\nno prompts or identities" as audit
+  }
+}
+cloud "OpenAI API\nexplicit cloud mode" as cloud
+node "Loopback model server\nexplicit local mode" as local
+rectangle "External deployment controls\nNOT supplied by this local application" #FFF0D9 {
+  component "Identity gateway\nOIDC / principal mapping" as gateway
+  component "TLS + egress allowlist + host sandbox\nsecret management + distributed limits\nretention + incident response" as ops
+}
+user --> cli
+browser --> web : same-origin cookie + CSRF
+web --> ingress : server-created browser Principal
+cli --> ingress : host-created Principal
+ingress --> graph : admitted turn
+graph --> context : authorize every access
+policy --> graph
+graph --> adapters : bounded model calls
+adapters --> cloud : HTTPS; selected mode only
+adapters --> local : loopback; separate credentials
+graph --> audit : reason, stages, policy, duration
+graph --> cli : validated reply or static fallback
+gateway ..> ingress : needed before public deployment
+ops ..> adapters : deployment enforcement
+note bottom of ingress
+Messages cannot select tenant, owner, roles,
+provider URL, policy version, or shared readers.
+Principal is trusted because the host creates it.
+This is not a public authentication server.
+Web cookies identify browser sessions, not verified people.
+end note
+note bottom of adapters
+No automatic cloud fallback, tools, shell,
+model retries, or raw streaming.
+Ambient LangSmith tracing is disabled.
+Selected prompt data still reaches the model service.
+end note
+legend bottom
+Green: implemented controls. Blue: host trust assumption.
+Orange: external controls, not deployed or verified here.
+LLM judgments are fallible observations, not authorization.
+endlegend
+@enduml

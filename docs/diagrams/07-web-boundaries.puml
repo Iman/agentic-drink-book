@@ -1,0 +1,55 @@
+@startuml
+title Web chatbot: system boundaries and control ownership
+skinparam shadowing false
+skinparam componentStyle rectangle
+top to bottom direction
+rectangle "B0: Browser boundary / untrusted caller" #F6EBDC {
+  component "React cocktail notebook\nplain-text replies, starters, reset\nno provider keys or identity controls" as browser
+}
+rectangle "B1: Local host process / FastAPI on 127.0.0.1:8000" #E8F0FA {
+  component "HTTP boundary\nHost + Origin checks\nHttpOnly SameSite cookie + CSRF\nbounded JSON body; extra fields forbidden" as api
+  component "Server-created Principal\nrandom browser credential\nconversation reset retains owner rate" as identity
+  rectangle "B2: Safety net / deterministic application enforcement" #EDF7ED {
+    component "LangGraph workflow\nadmission, context authorization\ninput rules + input evidence reducer\nbuffer draft + output rules/reducer" as graph
+    database "ContextStore\nowner and tenant checks, TTL\naccepted turns only, bounded history" as memory
+    file "Policy 2.0.0\ndrinks-only purpose\nimmutable at runtime + digest" as policy
+    component "LangChain adapter\nstrict schema parsing\nseparate judge/generation circuits" as adapter
+  }
+  rectangle "B3: Judge contract / logical boundary" #F3EAF6 {
+    component "InputEvidence\nrisks, relevance, name, uncertainty" as input
+    component "OutputEvidence\nsafety, in_scope, quality, uncertainty" as output
+  }
+}
+rectangle "B4: Model service / separate trust domain" #FBE9E4 {
+  node "Ollama on loopback\nor explicitly selected OpenAI API" as provider
+  component "Judge model\ninput and output rubrics" as judge
+  component "Response model\ndrinks specialist instructions" as response
+  provider -- judge
+  provider -- response
+}
+rectangle "B5: Public deployment controls / not deployed" #FFF0D9 {
+  component "TLS, verified account identity, distributed quotas\nhost isolation, egress enforcement, monitoring\npolicy review, independent evaluation and incident response" as external
+}
+browser --> api : JSON message / approved reply
+api --> identity : credential lookup
+identity --> graph : host identity, session, message
+policy --> graph
+graph <--> memory : authorize every read/write
+graph --> adapter : bounded model calls
+adapter --> provider : selected endpoint only
+judge ..> input : untrusted observations
+judge ..> output : untrusted observations
+input --> graph : validate then reduce in code
+output --> graph : validate then reduce in code
+external ..> api : required before public exposure
+note bottom of graph
+Any failed gate stops the turn. No draft streaming.
+Only accepted exchanges reach memory.
+Models cannot grant roles, publish documents or change policy.
+end note
+note bottom of provider
+Default: same model for generation and judging.
+Logical role separation is not process isolation or independent accuracy.
+Loopback transport does not attest offline inference.
+end note
+@enduml

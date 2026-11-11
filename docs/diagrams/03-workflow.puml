@@ -1,0 +1,45 @@
+@startuml
+title LangGraph nodes and deterministic routing
+skinparam shadowing false
+start
+:Host identity; session ownership;\nrate limit; session lock; global capacity;
+if (Admitted?) then (yes)
+  :input_rules;
+  if (Rules pass?) then (yes)
+    :load_context;
+    note right
+      Exact owner; same-tenant explicit document readers.
+      Omit whole records to fit the context budget.
+    end note
+    :input_judge;
+    if (Typed observations satisfy policy?) then (yes)
+      :generate;
+      :output_rules;
+      if (Output checks pass?) then (yes)
+        :output_judge;
+        if (Safety and quality pass?) then (yes)
+          :commit;
+          :Release candidate;
+        else (no)
+          :Discard draft; static fallback;
+        endif
+      else (no)
+        :Discard draft; static fallback;
+      endif
+    else (no)
+      :Neutral greeting for name-only uncertainty;\notherwise static fallback; no memory write;
+    endif
+  else (no)
+    :Neutral greeting for unsuitable name;\notherwise static blocked response;
+  endif
+else (no)
+  :Static unavailable response;
+endif
+:Release capacity; metadata audit;
+stop
+legend bottom
+Provider errors, timeouts and invalid schemas fail closed.
+No graph loops, model-selected routes, automated revision or tool dispatch.
+Screened memory remains untrusted data.
+endlegend
+@enduml

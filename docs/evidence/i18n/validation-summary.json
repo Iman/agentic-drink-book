@@ -1,0 +1,66 @@
+{
+  "completed_at": "2026-11-11T22:47:45.282170+00:00",
+  "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+  "prompt_digest": "d848af120bc0d03de7c39d748154d36ff96ab253bbafd38cb7fa719de6075f4d",
+  "pytest": {
+    "tests": 87,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "behave": {
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "react_dom": {
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "command": "npm --prefix frontend test",
+    "environment": "jsdom; no visual browser rendering"
+  },
+  "localization_live": {
+    "passed": 7,
+    "total": 8
+  },
+  "english_live": {
+    "passed": 20,
+    "total": 20
+  },
+  "web_live": {
+    "passed": 3,
+    "total": 4,
+    "remaining_failure": "Persian Negroni ingredient check"
+  },
+  "source_sha256": {
+    "frontend/package-lock.json": "c43b7205f4234ad5bd0943b50d19ca8ef719de6f0ac066dff274b0b79639885d",
+    "frontend/package.json": "0595e146786858c95488ce4716b5da8b0ce010fec0509dce0e77fcaf5d573258",
+    "frontend/src/App.jsx": "ad5059844a200afb93955ddf2dc167bcf7a763212d7be57609101045cceb16ad",
+    "frontend/src/i18n.js": "ebf4ecaf5ead4aba741c35447769ac56dc10f34ee1be736c64efe14c9589de20",
+    "frontend/src/main.jsx": "3d73feae7a88344f4c9260a149ce0d50e00c7390232f566ec761171d747add79",
+    "frontend/src/style.css": "50d94b6cdc488bf36c94f40b86e5e593509e93748856f46d06bbc5b39e26ff65",
+    "frontend/tests/i18n.test.js": "a8ce052568d1acc5ba3743e29dc937a86dc34dee5bea32cc3f674774e84846d4",
+    "src/agentic_chat/__init__.py": "3a878bc8f11485e6142ac6aabbb54c53c99cdcb6555dcc2bf5eae32823d92c07",
+    "src/agentic_chat/cli.py": "b4e24fe9777f8471412fc6b5e42cfbb7c25144df6a31f13f2542f9636e34be56",
+    "src/agentic_chat/context.py": "a7b6628458d4ab38de8faa8d9091f8513996a5bcb38e608b24aae89c0110d7a4",
+    "src/agentic_chat/eval_cases.json": "0bc06eda3a3ab935635d05e8d198e503f584fdb9095c00b919e10316b52219a1",
+    "src/agentic_chat/eval_holdout.json": "d2c97737c570a5b4ca5dcd4e2afa9d1b82ed16e821c54f2cc8a779d34c938857",
+    "src/agentic_chat/eval_localization.json": "c8bc9fc5381bf65a716f41ce130fa16f9011e6f7e13061be86a858bd0896527f",
+    "src/agentic_chat/evaluation.py": "ff4be12a82adee10f78f3010fc924316f4b1b44cc6b0cb95a5cd8b1da44c9655",
+    "src/agentic_chat/localization.py": "a71d9ecb2f58a4b005d9af5771557b46e7f4c20ae714d856df80d8dbf8908b51",
+    "src/agentic_chat/policy.json": "ad1eee2bc20c30282baa6e1ed46e358ddac0cc4bde1298d6e565931869ff4f6a",
+    "src/agentic_chat/policy.py": "ffad27456d570f7b5c0b3d1c272eff4e30b16dfc43760903abd6caf0683f8855",
+    "src/agentic_chat/providers.py": "cd158a5d660d6efc06e5be3ce10ab5cc1dfa11b6184dd38bfd9ad73f88992520",
+    "src/agentic_chat/resilience.py": "1ba28b475bd4a5b963e0ef2e609ba034cd96e5760e3de25e44e4711690688d44",
+    "src/agentic_chat/testing.py": "1dd4a982cc6533d7739b0f821987343aba35ed95d806efd58649b25945dac2ce",
+    "src/agentic_chat/web.py": "015b3cea7196cde1d35f892d4c92ffc148bcf1b02f75d09fedaffbc519d7cc58",
+    "src/agentic_chat/workflow.py": "92e214b4bdcc94c0e88c49cce94b3f7ab9fc146d982d489354af0e95b09d5975"
+  },
+  "limits": [
+    "One Persian recipe-content check failed with gemma3:4b.",
+    "Browser access host unavailable; RTL font shaping and visual layout unverified.",
+    "No live OpenAI test."
+  ]
+}

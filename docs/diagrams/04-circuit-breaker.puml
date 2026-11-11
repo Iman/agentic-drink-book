@@ -1,0 +1,33 @@
+@startuml
+title Circuit state, deadlines and traffic admission
+skinparam shadowing false
+[*] --> Closed
+Closed : Calls admitted subject to capacity
+Closed : Healthy completion resets failure count
+Closed --> Open : failure threshold reached
+Open : Reject calls without provider I/O
+Open : Monotonic cooldown clock
+Open --> HalfOpen : cooldown elapsed; first eligible call
+HalfOpen : Exactly one recovery probe
+HalfOpen : Reject other callers
+HalfOpen --> Closed : probe healthy and within latency limit
+HalfOpen --> Open : failure, slowness, timeout or cancellation
+note right of Closed
+Every call has an asyncio deadline.
+Slow completed responses are discarded.
+Transport, schema and response failures count.
+Policy rejection and busy admission do not count.
+end note
+note bottom of Open
+An epoch prevents a late success from closing
+a circuit tripped by a newer failure.
+Separate generation and judge circuits.
+No retries or alternate-provider data transfer.
+end note
+legend bottom
+1. ContextStore: per-owner rate and one turn per session.
+2. Chatbot: global in-flight turn cap, no waiting queue.
+3. CircuitBreaker: role capacity, deadline, slow threshold, cooldown.
+All controls are process-local, not distributed traffic management.
+endlegend
+@enduml

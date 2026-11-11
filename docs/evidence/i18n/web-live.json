@@ -1,0 +1,47 @@
+{
+  "completed_at": "2026-11-11T22:44:01.823642+00:00",
+  "model": "gemma3:4b",
+  "prompt_digest": "d848af120bc0d03de7c39d748154d36ff96ab253bbafd38cb7fa719de6075f4d",
+  "cases": [
+    {
+      "id": "recipe",
+      "language": "fa",
+      "status": "answered",
+      "expected": "answered",
+      "language_script_check": true,
+      "recipe_ingredient_check": false,
+      "passed": false
+    },
+    {
+      "id": "followup",
+      "language": "en",
+      "status": "answered",
+      "expected": "answered",
+      "language_script_check": true,
+      "recipe_ingredient_check": true,
+      "passed": true
+    },
+    {
+      "id": "unrelated",
+      "language": "fa",
+      "status": "blocked",
+      "expected": "blocked",
+      "language_script_check": true,
+      "recipe_ingredient_check": true,
+      "passed": true
+    },
+    {
+      "id": "name",
+      "language": "fa",
+      "status": "neutral",
+      "expected": "neutral",
+      "language_script_check": true,
+      "recipe_ingredient_check": true,
+      "passed": true
+    }
+  ],
+  "only_accepted_turns_saved": true,
+  "invalid_language_rejected": true,
+  "persian_validation_error": true,
+  "reset_passed": true
+}

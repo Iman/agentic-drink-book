@@ -1,0 +1,35 @@
+@startuml
+title Context lifecycle and authority boundaries
+skinparam shadowing false
+top to bottom direction
+actor "Host identity" as identity
+actor "Authorized publisher" as publisher
+component "Screen + input judge\nshared-document mode" as ingest
+database "Shared store\ntenant + explicit readers\nsource + digest + expiry" as shared
+database "Session store\ntenant + subject owner\nbounded accepted turns + TTL" as sessions
+component "ContextStore.bundle\nauthorize before selection" as bundle
+component "HumanMessage(JSON)\nuntrusted data envelope" as data
+component "SystemMessage\noperator-owned policy" as system
+component "Models" as model
+identity --> sessions : opaque session
+publisher --> ingest : bounded text + source + readers
+ingest --> shared : checks pass
+identity --> bundle : trusted principal
+shared --> bundle : tenant AND reader AND unexpired
+sessions --> bundle : exact owner check
+bundle --> data : whole records within budget
+system --> model : instructions
+data --> model : evidence
+model ..> sessions : only Chatbot.commit after output acceptance
+note bottom of shared
+Source labels are assertions, not verified authenticity.
+SHA-256 identifies content, not truth or authorship.
+No URL fetching or cross-tenant sharing.
+end note
+note bottom of sessions
+Screened exchanges remain untrusted.
+Rejected inputs, drafts and judgments are not checkpointed.
+/reset deletes a session; TTL cleanup occurs on access.
+Process exit clears memory; TTL is not secure erasure.
+end note
+@enduml

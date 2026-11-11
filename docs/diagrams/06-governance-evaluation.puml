@@ -1,0 +1,44 @@
+@startuml
+title Policy change and evaluation evidence
+skinparam shadowing false
+start
+:Edit operator-owned policy or judge rubric;
+:Review threat and consequence coverage;
+note right
+Identity bypass; context disclosure; memory poisoning;
+prompt injection; offensive personalization;
+unsafe output; dependency failure; overload.
+end note
+:Run pytest security and resilience tests;
+:Run Behave Gherkin acceptance scenarios;
+:Run scripted offline evaluation;
+note right
+Scripted evidence tests branch wiring.
+It does not measure model detection accuracy.
+end note
+if (Offline checks pass?) then (yes)
+  :Run synthetic live model evaluation;
+  :Record policy and dataset digests,\nmodels, timestamps, outcomes and latency;
+  note right
+Expected outcomes are independent of online judge scores.
+Outages are failures, not successful attack blocks.
+Do not relabel cases to make a model appear successful.
+  end note
+  :Review false rejections, unsafe answers,\nmultilingual cases and holdout adversarial inputs;
+  if (Owner accepts evidence and remaining risks?) then (yes)
+    :Release reviewed policy and lockfile;
+    :External deployment: signed review,\ncanary, monitoring and rollback where configured;
+  else (no)
+    :Revise controls or retain previous version;
+  endif
+else (no)
+  :Correct regression;
+endif
+stop
+legend bottom
+Implemented: policy validation/digest, tests, scenario expectations,
+live evaluation report and bounded metadata audit.
+Operational procedure: signing, review, canary, monitoring, rollback.
+No repository host or deployment pipeline is provisioned here.
+endlegend
+@enduml

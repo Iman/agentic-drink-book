@@ -1,0 +1,53 @@
+@startuml
+title Safety net and judge contract: observations cross, authority does not
+skinparam shadowing false
+skinparam componentStyle rectangle
+left to right direction
+rectangle "Untrusted data" #F6EBDC {
+  component "Current message\naccepted history\npermitted shared documents" as data
+  component "Buffered draft" as draft
+}
+rectangle "Deterministic safety net / same application process" #EDF7ED {
+  component "Input rules\nsize, characters, secret patterns\nname and injection patterns" as ir
+  component "Strict InputEvidence validation\ninput_decision()\nrisks -> scope -> name -> uncertainty" as id
+  component "Output rules\nsize, characters, secrets\nunsuitable greeting patterns" as outr
+  component "Strict OutputEvidence validation\noutput_decision()\nsafety, name, scope, uncertainty, quality" as od
+  component "Release exact inspected reply\ncommit accepted exchange" as release
+  component "Static refusal / neutral redirect\nor unavailable response\nno memory commit" as stop
+}
+rectangle "Judge boundary / advisory contract" #F3EAF6 {
+  component "Fixed input rubric\nJSON data is not instructions\nrelevant=false for mixed/unrelated topics" as ij
+  component "Fixed output rubric\ninspect current request and exact draft\nreject unrelated requests, even refusals" as oj
+}
+rectangle "Provider call boundary / client-side adapters" #FBE9E4 {
+  component "LangChain model calls\njudge circuit: capacity, deadline\nslow-call discard, cooldown, one probe" as calls
+  component "Generation circuit\ndraft generation under fixed rules" as generation
+}
+data --> ir
+ir --> ij : rules passed
+ij <--> calls : request / schema evidence
+ij --> id : observations, never permissions
+id --> generation : accepted
+generation --> draft
+draft --> outr
+outr --> oj : rules passed
+oj <--> calls
+oj --> od : observations, never permissions
+od --> release : all mandatory gates passed
+ir --> stop : reject
+id --> stop : reject / uncertain / invalid
+outr --> stop : reject
+od --> stop : reject / uncertain / invalid
+calls --> stop : timeout / failure / open circuit
+generation --> stop : timeout / failure / open circuit
+note bottom of id
+Brief greetings/name setup may redirect to drinks.
+Whiskey, wine, beer and Arak Sagi production are in scope.
+Drink terms cannot authorize unrelated tasks or harmful assistance.
+end note
+note bottom of oj
+A model can misclassify data or be manipulated.
+Schema validity is not factual or safety assurance.
+Live evaluations measure observed behavior separately.
+end note
+@enduml

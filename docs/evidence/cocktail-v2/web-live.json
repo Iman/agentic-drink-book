@@ -1,0 +1,52 @@
+{
+  "completed_at": "2026-11-11T22:17:38.527107+00:00",
+  "provider": "local",
+  "model": "gemma3:4b",
+  "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+  "prompt_digest": "263cf1fd726c32b553f8405e827d2055d8fa91652a70b8f4e87545ef4e97f45d",
+  "cases": [
+    {
+      "case": "cocktail",
+      "http_status": 200,
+      "status": "answered",
+      "expected": "answered",
+      "elapsed_seconds": 3.336,
+      "passed": true
+    },
+    {
+      "case": "followup",
+      "http_status": 200,
+      "status": "answered",
+      "expected": "answered",
+      "elapsed_seconds": 3.032,
+      "passed": true
+    },
+    {
+      "case": "unrelated",
+      "http_status": 200,
+      "status": "blocked",
+      "expected": "blocked",
+      "elapsed_seconds": 2.453,
+      "passed": true
+    },
+    {
+      "case": "mixed",
+      "http_status": 200,
+      "status": "blocked",
+      "expected": "blocked",
+      "elapsed_seconds": 3.3,
+      "passed": true
+    },
+    {
+      "case": "name",
+      "http_status": 200,
+      "status": "neutral",
+      "expected": "neutral",
+      "elapsed_seconds": 0.006,
+      "passed": true
+    }
+  ],
+  "reset_and_csrf_rotation_passed": true,
+  "accepted_history_turns": 2,
+  "static_page_served": true
+}

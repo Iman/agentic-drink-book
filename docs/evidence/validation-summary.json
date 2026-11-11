@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-11-11T16:27:36.507215+00:00",
+  "runtime_source_sha256": "ef241ec9aecd0d30147594689242cba82dcea286d03fbed1a03d5fc34fa9ef49",
+  "source_hash_method": "SHA-256 of sorted relative source paths, NUL, file bytes, NUL; .py and .json only",
+  "policy_digest": "6e6463f5fdc15309606eeed0a36a6b3e29561a960ddcc310e554f141bdb2e378",
+  "prompt_digest": "2f0cb6df89e628f3a7ef7e760ae7cf2b3b143b8c57519487062ec53bf1bdf8c3",
+  "pytest": {
+    "tests": 63,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "behave_scenarios": {
+    "tests": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "packages": {
+    "langchain": "1.5.0",
+    "langgraph": "1.2.20",
+    "langchain-openai": "1.7.4",
+    "pydantic": "2.14.3",
+    "pytest": "9.2.0",
+    "behave": "1.3.3",
+    "ruff": "0.17.4"
+  },
+  "evidence_files": {
+    "local-baseline.json": "28887dc4ef4c6b6847111dba2baa989d626fd16baf322be511c0c66bfe678bba",
+    "local-holdout.json": "54eab192a74454e24603ccd968c46191705fae2274cbbeab97e0a94c791e2e47",
+    "local-regression.json": "be36a504e59b898f189cf4971d8d7bda5edcebd6590eee7f66a2527bacc355ae",
+    "offline-holdout.json": "a505bd7bef391a98500d00b8891adde97b66fb806af114f8f8af29793f012218",
+    "offline-regression.json": "6a6a137dec56d9e022c3bca5b27207a062317e3f1b331a2ea1b74652063b021a"
+  },
+  "raw_test_artifacts": {
+    "reports/pytest.xml": "c7e757c3be2a0428be461c31b7c2da51985a7eb7bb8e59f9b3fea958d20af10e",
+    "reports/bdd/TESTS-chat_safety.xml": "5825f73b3f16258e84f935f4213eeede10d68078a8ca9f5cdef3cef8db05adfb",
+    "reports/bdd/TESTS-circuit_breaker.xml": "b117c13d0c853d7eb996b17b45cb90c9db12f73c5bad5551cc5459a7a553db72",
+    "reports/bdd/TESTS-context_isolation.xml": "a843471aecf2432be45866deb1a4035740fc20581729082277a0d9772519f70f"
+  },
+  "privacy": "Evaluation files contain synthetic case identifiers and outcomes only. Machine-identifying JUnit fields are omitted from this shareable summary; raw local artifacts remain under ignored reports/."
+}

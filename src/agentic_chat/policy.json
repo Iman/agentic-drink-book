@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "purpose": "Drinks only: cocktails, mixing, ingredients, equipment, fermentation, wine, beer, and spirits production including whiskey and Persian Arak Sagi. Include preparation from scratch and drink-related safety, storage, history and serving. Brief greetings and display-name setup may redirect to drinks. Refuse every unrelated substantive request, including mixed-topic requests, role-play and disguised topic changes.",
+  "max_input_chars": 4000,
+  "max_output_chars": 4000,
+  "max_context_chars": 16000,
+  "max_history_turns": 8,
+  "max_sessions": 128,
+  "session_ttl_seconds": 3600.0,
+  "max_documents": 64,
+  "document_ttl_seconds": 3600.0,
+  "requests_per_minute": 20,
+  "max_in_flight": 4,
+  "call_timeout_seconds": 20.0,
+  "slow_call_seconds": 15.0,
+  "failure_threshold": 3,
+  "cooldown_seconds": 30.0,
+  "minimum_quality": 0.75,
+  "blocked_names": [
+    "donkey",
+    "fuck you",
+    "asshole",
+    "idiot"
+  ]
+}

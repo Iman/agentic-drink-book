@@ -1,0 +1,65 @@
+@startuml
+title One turn: all gates precede response release and memory commit
+skinparam shadowing false
+autonumber
+actor Caller
+participant "Chatbot.chat" as chat
+database ContextStore as store
+participant "Policy rules" as rules
+participant "Judge circuit" as jc
+participant "Input/output judge" as judge
+participant "Generation circuit" as gc
+participant "Response model" as model
+Caller -> chat : host Principal, session ID, message
+chat -> store : admit(principal, session)
+store --> chat : ownership + rate limit + session lock
+note over chat,store
+Global cap rejects excess work immediately.
+Foreign sessions fail before any model call.
+end note
+chat -> rules : length, controls, known secrets,\ninjection/name patterns
+alt rejected input or unsuitable name
+  chat --> Caller : static fallback; no memory write
+else deterministic checks pass
+  chat -> store : bundle(principal, session)
+  store --> chat : bounded history + permitted unexpired documents
+  chat -> jc : inspect input
+  jc -> judge : fixed rubric + untrusted JSON context
+  judge --> jc : strict InputEvidence
+  jc --> chat : evidence or unavailable
+  chat -> rules : reduce observations in code
+  alt uncertain, malicious, irrelevant or malformed
+    chat --> Caller : fallback; no generation
+  else input accepted
+    chat -> gc : generate(context + message)
+    gc -> model : fixed rules + untrusted JSON
+    model --> gc : buffered candidate
+    gc --> chat : candidate or unavailable
+    chat -> rules : output length, controls, secrets, greetings
+    alt output rules reject
+      chat --> Caller : fallback; no output-judge call
+    else output rules pass
+    chat -> jc : inspect exact candidate and original context
+    jc -> judge : independent output rubric
+    judge --> jc : strict OutputEvidence
+    jc --> chat : evidence or unavailable
+    chat -> rules : safety + drinks-only scope + quality thresholds
+    alt output rejected or judge unavailable
+      chat --> Caller : fallback; discard candidate
+    else all gates pass
+      chat -> store : recheck owner; commit bounded exchange
+      chat --> Caller : exact inspected candidate
+    end
+    end
+  end
+end
+note over chat
+Always release slots; completed requests append metadata audit.
+Cancellation releases slots and propagates.
+Three model calls on an ordinary successful turn.
+No raw checkpoint or early token streaming.
+InputEvidence.relevant rejects unrelated and mixed-topic requests.
+OutputEvidence.in_scope rejects unrelated draft content.
+Web session/CSRF sequence is documented separately in diagram 09.
+end note
+@enduml

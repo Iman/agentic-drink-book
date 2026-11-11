@@ -1,0 +1,155 @@
+{
+  "completed_at": "2026-11-11T23:42:19.692029+00:00",
+  "scope": "Source review and public repository preparation; no public service deployment",
+  "pytest": {
+    "tests": 87,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "behave": {
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "steps_passed": 174
+  },
+  "react_dom": {
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "environment": "jsdom"
+  },
+  "scripted_evaluations": {
+    "regression": {
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "completed_at": "2026-11-11T23:35:04.931443+00:00",
+      "dataset_sha256": "0bc06eda3a3ab935635d05e8d198e503f584fdb9095c00b919e10316b52219a1",
+      "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+      "prompt_digest": "d848af120bc0d03de7c39d748154d36ff96ab253bbafd38cb7fa719de6075f4d"
+    },
+    "holdout": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "completed_at": "2026-11-11T23:35:05.443524+00:00",
+      "dataset_sha256": "d2c97737c570a5b4ca5dcd4e2afa9d1b82ed16e821c54f2cc8a779d34c938857",
+      "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+      "prompt_digest": "d848af120bc0d03de7c39d748154d36ff96ab253bbafd38cb7fa719de6075f4d"
+    },
+    "localization": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "completed_at": "2026-11-11T23:35:05.942592+00:00",
+      "dataset_sha256": "c8bc9fc5381bf65a716f41ce130fa16f9011e6f7e13061be86a858bd0896527f",
+      "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+      "prompt_digest": "d848af120bc0d03de7c39d748154d36ff96ab253bbafd38cb7fa719de6075f4d"
+    }
+  },
+  "dependency_audits": {
+    "python": {
+      "source": "all registry package versions from uv.lock",
+      "packages_checked": 63,
+      "known_vulnerabilities": 0,
+      "skipped_packages": []
+    },
+    "npm": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "dependencies": {
+        "prod": 4,
+        "dev": 75,
+        "optional": 34,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 78
+      }
+    }
+  },
+  "commands": [
+    "uv run --no-sync pytest --color=no --junitxml=reports/release-pytest.xml",
+    "uv run --no-sync behave --no-color --format progress --junit --junit-directory reports/release-bdd",
+    "npm --prefix frontend test",
+    "npm --prefix frontend run build",
+    "uv run --no-sync ruff check src tests features scripts",
+    "uv run --no-sync ruff format --check src tests features scripts",
+    "uv build --color never",
+    "uv run --no-sync agentic-eval --output reports/release-offline.json",
+    "uv run --no-sync agentic-eval --suite holdout --output reports/release-holdout.json",
+    "uv run --no-sync agentic-eval --suite localization --output reports/release-localization.json",
+    "npm --prefix frontend audit --json",
+    "uvx --from pip-audit pip-audit --requirement reports/release-audit-requirements.txt --no-deps --disable-pip --progress-spinner off --format json --output reports/release-pip-audit.json",
+    "gh api markdown -f mode=gfm -f context=Iman/agentic-drink-book -F text=@README.fa.md"
+  ],
+  "execution_notes": [
+    "The initial uv test and lint attempts could not write the default cache. Successful reruns used a writable temporary cache.",
+    "pip-audit --locked did not recognize uv.lock. All registry package versions were extracted and audited as exact pins without dependency resolution.",
+    "Temporary cache options are omitted from the portable command list.",
+    "Raw local JUnit paths and identifying fields are excluded from this public summary.",
+    "GitHub Markdown output retained one RTL/right wrapper, seven LTR/left command wrappers, headings, and lists.",
+    "The public-file scan found only a synthetic URL credential rejection fixture.",
+    "The commit hook passed one allowed-message check and two prohibited-attribution checks."
+  ],
+  "source_sha256": {
+    "features/chat_safety.feature": "bf1fcc5694269697bec25cb81c93f8a062f99a6f81d9dceb26057fc2b82bf4c9",
+    "features/circuit_breaker.feature": "dd5e263a1a01d452afd23e957052cb42fab4b21d7c923113b5038a7b43e67ad4",
+    "features/context_isolation.feature": "b436ce86a565f1c59aefdbb00ef52f3565ba575ffd0fe0f490edd403301a3e29",
+    "features/drinks_scope.feature": "addf6e8c2b70f4d9cfa1f6171ce3ebd82c589669d65121a54f9371430f8f192e",
+    "features/localization.feature": "47e2e5de1f070f39821a80f71830158b908d8720d91d5739898db57a6b3b94e0",
+    "features/steps/chat_steps.py": "501edd53561ba3d0dd97d8948405de3d2ce603aed3fac16ef577083ae88c4c50",
+    "frontend/package-lock.json": "c43b7205f4234ad5bd0943b50d19ca8ef719de6f0ac066dff274b0b79639885d",
+    "frontend/package.json": "0595e146786858c95488ce4716b5da8b0ce010fec0509dce0e77fcaf5d573258",
+    "frontend/src/App.jsx": "ad5059844a200afb93955ddf2dc167bcf7a763212d7be57609101045cceb16ad",
+    "frontend/src/i18n.js": "ebf4ecaf5ead4aba741c35447769ac56dc10f34ee1be736c64efe14c9589de20",
+    "frontend/src/main.jsx": "3d73feae7a88344f4c9260a149ce0d50e00c7390232f566ec761171d747add79",
+    "frontend/src/style.css": "50d94b6cdc488bf36c94f40b86e5e593509e93748856f46d06bbc5b39e26ff65",
+    "frontend/tests/i18n.test.js": "a8ce052568d1acc5ba3743e29dc937a86dc34dee5bea32cc3f674774e84846d4",
+    "pyproject.toml": "c2a8d2f318bfc44c786abb67eabd7c4ede642f4255b8bd8475f245376f95141c",
+    "scripts/start.sh": "d17f44043a4692466655587a4c8a5639b208f3bc3abeca695f7938ee2d88e50b",
+    "src/agentic_chat/__init__.py": "3a878bc8f11485e6142ac6aabbb54c53c99cdcb6555dcc2bf5eae32823d92c07",
+    "src/agentic_chat/cli.py": "b4e24fe9777f8471412fc6b5e42cfbb7c25144df6a31f13f2542f9636e34be56",
+    "src/agentic_chat/context.py": "a7b6628458d4ab38de8faa8d9091f8513996a5bcb38e608b24aae89c0110d7a4",
+    "src/agentic_chat/eval_cases.json": "0bc06eda3a3ab935635d05e8d198e503f584fdb9095c00b919e10316b52219a1",
+    "src/agentic_chat/eval_holdout.json": "d2c97737c570a5b4ca5dcd4e2afa9d1b82ed16e821c54f2cc8a779d34c938857",
+    "src/agentic_chat/eval_localization.json": "c8bc9fc5381bf65a716f41ce130fa16f9011e6f7e13061be86a858bd0896527f",
+    "src/agentic_chat/evaluation.py": "ff4be12a82adee10f78f3010fc924316f4b1b44cc6b0cb95a5cd8b1da44c9655",
+    "src/agentic_chat/localization.py": "a71d9ecb2f58a4b005d9af5771557b46e7f4c20ae714d856df80d8dbf8908b51",
+    "src/agentic_chat/policy.json": "ad1eee2bc20c30282baa6e1ed46e358ddac0cc4bde1298d6e565931869ff4f6a",
+    "src/agentic_chat/policy.py": "ffad27456d570f7b5c0b3d1c272eff4e30b16dfc43760903abd6caf0683f8855",
+    "src/agentic_chat/providers.py": "cd158a5d660d6efc06e5be3ce10ab5cc1dfa11b6184dd38bfd9ad73f88992520",
+    "src/agentic_chat/resilience.py": "1ba28b475bd4a5b963e0ef2e609ba034cd96e5760e3de25e44e4711690688d44",
+    "src/agentic_chat/testing.py": "1dd4a982cc6533d7739b0f821987343aba35ed95d806efd58649b25945dac2ce",
+    "src/agentic_chat/web.py": "015b3cea7196cde1d35f892d4c92ffc148bcf1b02f75d09fedaffbc519d7cc58",
+    "src/agentic_chat/workflow.py": "92e214b4bdcc94c0e88c49cce94b3f7ab9fc146d982d489354af0e95b09d5975",
+    "tests/test_drinks_scope.py": "987f40e60210d69a42e91e64b293ae7e5f37ca5b5d2413f88eee7e9a8cec3f14",
+    "tests/test_governance.py": "80fefcfcea9d115e45e1c9dd34e8d0b7584133c5e75f2f39e49db5a73ccec4b4",
+    "tests/test_policy.py": "f6400890577c36a4b2f7b57b2d2dce08c86c0015aaa977bbd0c86c8a78cd1e95",
+    "tests/test_providers.py": "b546580efce5f5b233d4b6d0c30d3ee88311549be6400433d14d310963e8642a",
+    "tests/test_resilience.py": "1291dac52467828bb7faa30dd3b0e2bdc76c7e67fa05a5b32b3c60e1de01cb1e",
+    "tests/test_web.py": "f19c291348a648e3398b01ac1cde39c93d67a984b7b83ff5c6c9b6332d250bf0",
+    "tests/test_workflow.py": "8e995b6011e116eb9b19c00c54c749b25947c95108e665bdb2431b3a9245ea7d",
+    "uv.lock": "b466bb5a7c92d1a9442d0801999ca8ec08ec1986d11efd169986df3bbc106286"
+  },
+  "not_checked": [
+    "New live model inference",
+    "Visual browser rendering",
+    "Sustained load",
+    "Penetration testing",
+    "Adaptive prompt-injection resistance"
+  ],
+  "known_open_issue": {
+    "status": "NOT FIXED",
+    "description": "Historical Persian Negroni answer passed the judge but failed its recipe ingredient check.",
+    "evidence": "docs/evidence/i18n/localization-live.json"
+  }
+}

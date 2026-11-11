@@ -1,0 +1,68 @@
+{
+  "completed_at": "2026-11-11T22:18:41.317188+00:00",
+  "policy_version": "2.0.0",
+  "policy_digest": "b87a08850031d1ae58f0cbb74c75c4d7639a1a86f2b1930c5fb206a1e6d06c34",
+  "prompt_digest": "263cf1fd726c32b553f8405e827d2055d8fa91652a70b8f4e87545ef4e97f45d",
+  "pytest": {
+    "tests": 72,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "behave_scenarios": {
+    "tests": 26,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "behave_steps": 142,
+  "offline_regression": {
+    "passed": 20,
+    "total": 20
+  },
+  "offline_holdout": {
+    "passed": 11,
+    "total": 11
+  },
+  "live_regression": {
+    "passed": 20,
+    "total": 20
+  },
+  "live_holdout": {
+    "passed": 11,
+    "total": 11
+  },
+  "web_live": {
+    "passed": 5,
+    "total": 5
+  },
+  "source_sha256": {
+    "frontend/index.html": "b1c12f8faa6d236d35f1bde6b83940ffdffca790d54fea58c77ccf6c8ce1a9ef",
+    "frontend/package-lock.json": "c65557752ec8979fac6261991075f0675cc486ec50ccf2d7d89a504c3fcdad78",
+    "frontend/package.json": "28ee07143a320d7c83edaabdfdb8af4c304f3f981c91067a7029e5cc65d636aa",
+    "frontend/src/main.jsx": "bed6d16c8b307954af62e6cf4d3693e578f50cb070981227411b5c17631b6bd1",
+    "frontend/src/style.css": "57bbee5f2baaba158a5489d0c367644832f957f39c258f812a5d9faa34ce4ddf",
+    "pyproject.toml": "c2a8d2f318bfc44c786abb67eabd7c4ede642f4255b8bd8475f245376f95141c",
+    "scripts/start.sh": "d17f44043a4692466655587a4c8a5639b208f3bc3abeca695f7938ee2d88e50b",
+    "src/agentic_chat/__init__.py": "3a878bc8f11485e6142ac6aabbb54c53c99cdcb6555dcc2bf5eae32823d92c07",
+    "src/agentic_chat/cli.py": "c838d2dcbd34465a63efae0e92f4eff88c91de609e959d7260db0289f3d8d1c5",
+    "src/agentic_chat/context.py": "a7b6628458d4ab38de8faa8d9091f8513996a5bcb38e608b24aae89c0110d7a4",
+    "src/agentic_chat/eval_cases.json": "0bc06eda3a3ab935635d05e8d198e503f584fdb9095c00b919e10316b52219a1",
+    "src/agentic_chat/eval_holdout.json": "d2c97737c570a5b4ca5dcd4e2afa9d1b82ed16e821c54f2cc8a779d34c938857",
+    "src/agentic_chat/evaluation.py": "7e010aacd588bc774aa15729ec995c3ec511b19e2bc250eb13f6f6ac47b91d54",
+    "src/agentic_chat/policy.json": "ad1eee2bc20c30282baa6e1ed46e358ddac0cc4bde1298d6e565931869ff4f6a",
+    "src/agentic_chat/policy.py": "039556e0417fb61446758321a7ba11d55a495306b03d727c74baf2c4276a89ed",
+    "src/agentic_chat/providers.py": "b245303a1052f39d6c1d2faa30150c656465245b64d78c31f58844fe3fcf8982",
+    "src/agentic_chat/resilience.py": "1ba28b475bd4a5b963e0ef2e609ba034cd96e5760e3de25e44e4711690688d44",
+    "src/agentic_chat/testing.py": "1dd4a982cc6533d7739b0f821987343aba35ed95d806efd58649b25945dac2ce",
+    "src/agentic_chat/web.py": "b4b0639a1bd7e232968077cdb6f18b517bed8440ce0a30c0c53bde138a7e14ca",
+    "src/agentic_chat/workflow.py": "65a821657485b9e783d22d94a7b71cb212aced6b02738371f80d1a9562669883",
+    "uv.lock": "b466bb5a7c92d1a9442d0801999ca8ec08ec1986d11efd169986df3bbc106286"
+  },
+  "limits": [
+    "Browser automation unavailable; no visual or keyboard browser verification.",
+    "Excalidraw structural/text-bounds checks only; editor import unverified.",
+    "No new live OpenAI test or public deployment.",
+    "Small synthetic evaluations do not establish general attack resistance."
+  ]
+}

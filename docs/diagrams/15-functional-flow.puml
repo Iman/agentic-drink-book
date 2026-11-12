@@ -1,0 +1,46 @@
+@startuml
+title Functional view: from a drinks question to a reviewed reply
+skinparam shadowing false
+start
+:Receive an English or Persian question;
+:Check caller, capacity and input rules;
+if (Host checks pass?) then (yes)
+  :Load only authorized conversation and documents;
+  :Input judge reports risks, scope and topic;
+  if (Code accepts evidence and specialist?) then (yes)
+    :One specialist drafts the answer;
+    note right
+    Mixing: cocktails, proportions, serving and storage.
+    Production: fermentation, brewing, wine and spirits.
+    Production also handles combined production/mixing requests.
+    Neither specialist can delegate or grant permissions.
+    end note
+    :Screen the exact draft;
+    if (Output rules pass?) then (yes)
+      :Output judge reports scope, safety and quality;
+      if (Code accepts output evidence?) then (yes)
+        :Recheck owner, store accepted exchange,\nthen display the reviewed reply;
+      else (no)
+        :Discard draft; display static fallback;
+      endif
+    else (no)
+      :Discard draft; display static fallback;
+    endif
+  else (no)
+    :Display refusal, neutral greeting\nor unavailable response; no memory write;
+  endif
+else (no)
+  :Return a static refusal, neutral reply\nor boundary error; no model work;
+endif
+stop
+legend bottom
+Three calls on an ordinary accepted turn: input judge, one specialist, output judge.
+Errors, timeouts and invalid evidence stop processing; no draft streaming or retries.
+Post-run LLM audit belongs to synthetic evaluation, outside this live-chat function.
+Reset removes the current idle conversation; interface language does not change ownership.
+Model evidence can be incorrect even when every code gate passes.
+Known limits: incorrect recipes, audit false alarms and wrongly accepted refusal history.
+Use diagram 03 for graph-node names and 09 for HTTP/session message order.
+endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
+@enduml

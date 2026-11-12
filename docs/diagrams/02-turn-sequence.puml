@@ -9,7 +9,7 @@ participant "Policy rules" as rules
 participant "Judge circuit" as jc
 participant "Input/output judge" as judge
 participant "Generation circuit" as gc
-participant "Response model" as model
+participant "Selected specialist\nmixing OR production" as model
 Caller -> chat : host Principal, session ID, message
 chat -> store : admit(principal, session)
 store --> chat : ownership + rate limit + session lock
@@ -25,14 +25,14 @@ else deterministic checks pass
   store --> chat : bounded history + permitted unexpired documents
   chat -> jc : inspect input
   jc -> judge : fixed rubric + untrusted JSON context
-  judge --> jc : strict InputEvidence
+  judge --> jc : strict InputEvidence + specialist topic
   jc --> chat : evidence or unavailable
-  chat -> rules : reduce observations in code
-  alt uncertain, malicious, irrelevant or malformed
+  chat -> rules : reduce observations + validate allowlisted route
+  alt uncertain, malicious, irrelevant, missing route or malformed
     chat --> Caller : fallback; no generation
   else input accepted
-    chat -> gc : generate(context + message)
-    gc -> model : fixed rules + untrusted JSON
+    chat -> gc : invoke exactly one specialist(context + message)
+    gc -> model : fixed specialist rules + language + untrusted JSON
     model --> gc : buffered candidate
     gc --> chat : candidate or unavailable
     chat -> rules : output length, controls, secrets, greetings
@@ -54,12 +54,15 @@ else deterministic checks pass
   end
 end
 note over chat
-Always release slots; completed requests append metadata audit.
+Always release slots; completed requests append metadata + selected specialist.
 Cancellation releases slots and propagates.
 Three model calls on an ordinary successful turn.
 No raw checkpoint or early token streaming.
+Post-run LLM auditing runs only in the synthetic evaluation harness.
 InputEvidence.relevant rejects unrelated and mixed-topic requests.
-OutputEvidence.in_scope rejects unrelated draft content.
+OutputEvidence.in_scope checks the current request and draft.
+A schema-valid judgment can still misclassify either one.
 Web session/CSRF sequence is documented separately in diagram 09.
 end note
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

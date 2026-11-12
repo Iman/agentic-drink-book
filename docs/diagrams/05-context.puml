@@ -10,7 +10,8 @@ database "Session store\ntenant + subject owner\nbounded accepted turns + TTL" a
 component "ContextStore.bundle\nauthorize before selection" as bundle
 component "HumanMessage(JSON)\nuntrusted data envelope" as data
 component "SystemMessage\noperator-owned policy" as system
-component "Models" as model
+component "Input judge, selected specialist, output judge" as model
+component "Chatbot._commit\nhost-owned memory write" as memory_commit
 identity --> sessions : opaque session
 publisher --> ingest : bounded text + source + readers
 ingest --> shared : checks pass
@@ -20,11 +21,13 @@ sessions --> bundle : exact owner check
 bundle --> data : whole records within budget
 system --> model : instructions
 data --> model : evidence
-model ..> sessions : only Chatbot.commit after output acceptance
+model ..> memory_commit : code accepts output evidence
+memory_commit --> sessions : recheck owner; append accepted exchange
 note bottom of shared
 Source labels are assertions, not verified authenticity.
 SHA-256 identifies content, not truth or authorship.
 No URL fetching or cross-tenant sharing.
+Shared-document inspection requires no specialist route.
 end note
 note bottom of sessions
 Screened exchanges remain untrusted.
@@ -32,4 +35,5 @@ Rejected inputs, drafts and judgments are not checkpointed.
 /reset deletes a session; TTL cleanup occurs on access.
 Process exit clears memory; TTL is not secure erasure.
 end note
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

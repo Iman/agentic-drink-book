@@ -1,5 +1,7 @@
 # Validation record: drinks chatbot, policy 2.0.0
 
+For policy 2.1.0, see [multi-agent validation](multi-agent-validation.md).
+
 This page records the drinks UI baseline before localization. For the later English/Persian
 change, see [language implementation and validation](localization.md). Each evidence set has
 its own source and prompt digests; the counts below are historical, not the latest suite totals.

@@ -1,0 +1,41 @@
+@startuml
+title L0 system context: people, application and model services
+skinparam shadowing false
+skinparam componentStyle rectangle
+top to bottom direction
+actor "Drink learner\nEnglish or Persian" as learner
+actor "Local operator\npolicy and evaluation owner" as operator
+rectangle "Application boundary / local teaching project" #E8F0FA {
+  component "Agentic Drink Book\nReact web interface or Python terminal\ndrinks questions, reviewed replies and session reset" as application #EDF7ED
+}
+node "Ollama\nexplicit loopback endpoint" as local #FBE9E4
+cloud "OpenAI API\nexplicit cloud selection" as cloud #FBE9E4
+rectangle "Public deployment requirements / not implemented here" #FFF0D9 {
+  component "Verified user identity, TLS and shared limits\nhost isolation, restricted egress and protected audit storage\nincident response and policy ownership" as external
+}
+learner --> application : ASK / READ
+operator --> application : CONFIGURE
+application --> local : LOCAL MODE
+application --> cloud : CLOUD MODE
+external ..> application : BEFORE EXPOSURE
+note left of application
+Scope: cocktails, ingredients, serving, storage,
+fermentation, brewing, wine and spirits production.
+Unrelated requests must be refused by policy.
+English / Persian presentation; Persian interface is RTL.
+end note
+note right of application
+Four runtime LLM roles; three calls per accepted turn.
+A fifth role audits synthetic evaluations when enabled.
+Code owns permissions, routing, memory and release.
+Incorrect recipes and accepted-refusal retention are known failures.
+end note
+legend bottom
+Solid arrows: supported interactions. Dashed arrow: deployment requirement.
+Exactly one provider mode is selected; no automatic cloud fallback.
+Cookies identify local browser sessions, not verified people.
+Model observations and audit findings can be wrong; no immunity claim.
+L0 is this repository's system-context view. Internal components are in L1 (14).
+endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
+@enduml

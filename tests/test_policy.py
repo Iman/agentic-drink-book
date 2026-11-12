@@ -20,6 +20,7 @@ def test_judge_cannot_add_permissions_or_coerce_boolean_strings():
 
 def test_uncertain_evidence_fails_closed():
     evidence = InputEvidence(
+        specialist="mixing",
         injection=False,
         social_engineering=False,
         sensitive_data=False,

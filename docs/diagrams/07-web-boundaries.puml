@@ -10,20 +10,20 @@ rectangle "B1: Local host process / FastAPI on 127.0.0.1:8000" #E8F0FA {
   component "HTTP boundary\nHost + Origin checks\nHttpOnly SameSite cookie + CSRF\nbounded JSON body; extra fields forbidden" as api
   component "Server-created Principal\nrandom browser credential\nconversation reset retains owner rate" as identity
   rectangle "B2: Safety net / deterministic application enforcement" #EDF7ED {
-    component "LangGraph workflow\nadmission, context authorization\ninput rules + input evidence reducer\nbuffer draft + output rules/reducer" as graph
+    component "LangGraph workflow\nadmission, context authorization\ninput rules + input evidence reducer\nallowlisted mixing / production branches\nbuffer draft + output rules/reducer" as graph
     database "ContextStore\nowner and tenant checks, TTL\naccepted turns only, bounded history" as memory
-    file "Policy 2.0.0\ndrinks-only purpose\nimmutable at runtime + digest" as policy
+    file "Policy 2.1.0\ndrinks-only purpose\nimmutable at runtime + digest" as policy
     component "LangChain adapter\nstrict schema parsing\nseparate judge/generation circuits" as adapter
   }
   rectangle "B3: Judge contract / logical boundary" #F3EAF6 {
-    component "InputEvidence\nrisks, relevance, name, uncertainty" as input
+    component "InputEvidence\nrisks, relevance, name, uncertainty\nconstrained specialist topic" as input
     component "OutputEvidence\nsafety, in_scope, quality, uncertainty" as output
   }
 }
 rectangle "B4: Model service / separate trust domain" #FBE9E4 {
   node "Ollama on loopback\nor explicitly selected OpenAI API" as provider
   component "Judge model\ninput and output rubrics" as judge
-  component "Response model\ndrinks specialist instructions" as response
+  component "Specialist models\nmixing / production instructions" as response
   provider -- judge
   provider -- response
 }
@@ -44,12 +44,15 @@ output --> graph : validate then reduce in code
 external ..> api : required before public exposure
 note bottom of graph
 Any failed gate stops the turn. No draft streaming.
-Only accepted exchanges reach memory.
+Only exchanges accepted by code reach memory.
+Incorrect model evidence can still pass those gates.
 Models cannot grant roles, publish documents or change policy.
 end note
 note bottom of provider
-Default: same model for generation and judging.
+Default: same model for specialists and judging.
+Separate audit model is opt-in through evaluation only.
 Logical role separation is not process isolation or independent accuracy.
 Loopback transport does not attest offline inference.
 end note
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

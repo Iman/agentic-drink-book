@@ -1,0 +1,40 @@
+@startuml
+title L1 components: entry points, host authority and model access
+skinparam shadowing false
+skinparam componentStyle rectangle
+top to bottom direction
+component "React browser client\nEnglish / Persian + RTL\nplain-text replies, session cookie and CSRF" as browser #F6EBDC
+rectangle "Python application modules / logical boundaries" #E8F0FA {
+  component "FastAPI entry point\nweb.py\nHost, Origin, JSON and locale checks" as web
+  component "Terminal entry point\ncli.py\nhost-created principal and operator options" as cli
+  rectangle "Code-owned authority" #EDF7ED {
+    component "LangGraph workflow\nworkflow.py\ninput review -> mixing OR production -> output review\ncode validates evidence and commits accepted turns" as graph
+    database "ContextStore\ncontext.py\nowner, tenant, readers, TTL and capacity" as context
+    file "Startup policy\npolicy.py + policy.json\nstrict schemas, rules, thresholds and digest" as policy
+  }
+  component "LangChain provider adapter\nproviders.py + resilience.py\nshared specialist circuit / judge circuit / audit circuit\ndeadlines, capacity and strict model outputs" as adapter #FBE9E4
+  component "Evaluation entry point\nevaluation.py + auditing.py\nsynthetic fixtures and independent expected outcomes\noptional post-run auditor; validated metadata report" as evaluation #F3EAF6
+}
+node "Selected model service\nloopback Ollama OR OpenAI API\nall model output remains untrusted" as provider #FBE9E4
+browser --> web : HTTP / JSON
+web --> graph : HOST CONTEXT
+cli --> graph : HOST CONTEXT
+graph --> context : OWNER CHECK
+policy --> graph : ENFORCE RULES
+policy --> evaluation : EVAL POLICY
+graph --> adapter : THREE CALLS
+evaluation ..> graph : SYNTHETIC RUN
+evaluation ..> adapter : OPTIONAL AUDIT
+adapter --> provider : MODEL CALL
+legend bottom
+Four runtime LLM roles; code controls routing, output release and memory writes.
+Boxes describe code responsibilities, not separate deployed services.
+Web, terminal and evaluation are alternative entry points using the same core modules.
+Evaluation uses its own state and clients; the audit-fixture suite calls only the auditor.
+The auditor cannot change policy, expected labels or completed chat outcomes.
+Provider, policy and credentials come from the operator, never chat text.
+Solid arrows: runtime calls or policy input. Dashed arrows: evaluation-only calls.
+L1 expands the application from L0 (13); detailed safety boundaries are in 07 and 08.
+endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
+@enduml

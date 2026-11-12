@@ -7,17 +7,19 @@ Feature: Drinks-only conversations
     Given a chatbot with scripted healthy models
 
   Scenario Outline: Drink production and cocktail questions pass the gates
+    Given the input judge selects "<specialist>"
     When the user says "<question>"
     Then the response status is "answered"
+    And only the "<specialist>" specialist was called
     And all three model stages were called
     And one conversation turn was stored
 
     Examples:
-      | question                                    |
-      | How do I mix a Negroni?                      |
-      | How is grape wine made from scratch?        |
-      | How is whiskey made from grain?             |
-      | How is Persian Arak Sagi made from raisins? |
+      | question                                    | specialist |
+      | How do I mix a Negroni?                      | mixing     |
+      | How is grape wine made from scratch?        | production |
+      | How is whiskey made from grain?             | production |
+      | How is Persian Arak Sagi made from raisins? | production |
 
   Scenario Outline: Unrelated and mixed-topic requests stop before generation
     Given the input judge reports an unrelated request

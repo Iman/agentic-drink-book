@@ -29,6 +29,7 @@ def make_models(args, policy):
         provider=args.provider,
         model=args.model,
         judge_model=args.judge_model,
+        audit_model=getattr(args, "audit_model", None),
         base_url=args.base_url,
         structured_method=args.structured_method,
     )

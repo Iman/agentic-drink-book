@@ -5,6 +5,7 @@ from copy import deepcopy
 from agentic_chat.policy import InputEvidence, OutputEvidence
 
 SAFE_INPUT = {
+    "specialist": "mixing",
     "injection": False,
     "social_engineering": False,
     "sensitive_data": False,
@@ -37,8 +38,8 @@ class ScriptedModels:
         self.calls.append(("input", deepcopy(payload)))
         return InputEvidence.model_validate({**SAFE_INPUT, **self.input_fields})
 
-    async def respond(self, payload):
-        self.calls.append(("response", deepcopy(payload)))
+    async def respond(self, payload, *, specialist):
+        self.calls.append(("response", {**deepcopy(payload), "specialist": specialist}))
         return self.response
 
     async def inspect_output(self, payload):

@@ -11,7 +11,7 @@ Open --> HalfOpen : cooldown elapsed; first eligible call
 HalfOpen : Exactly one recovery probe
 HalfOpen : Reject other callers
 HalfOpen --> Closed : probe healthy and within latency limit
-HalfOpen --> Open : failure, slowness, timeout or cancellation
+HalfOpen --> Open : failure, slowness, timeout, cancellation or no capacity
 note right of Closed
 Every call has an asyncio deadline.
 Slow completed responses are discarded.
@@ -21,7 +21,8 @@ end note
 note bottom of Open
 An epoch prevents a late success from closing
 a circuit tripped by a newer failure.
-Separate generation and judge circuits.
+Shared specialist generation circuit; separate judge circuit.
+Evaluation auditor has its own circuit and one in-flight slot.
 No retries or alternate-provider data transfer.
 end note
 legend bottom
@@ -30,4 +31,5 @@ legend bottom
 3. CircuitBreaker: role capacity, deadline, slow threshold, cooldown.
 All controls are process-local, not distributed traffic management.
 endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

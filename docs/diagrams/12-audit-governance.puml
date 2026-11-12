@@ -1,0 +1,59 @@
+@startuml
+title Governance and LLM audit: evidence without decision authority
+skinparam shadowing false
+skinparam componentStyle rectangle
+top to bottom direction
+actor "Policy owner / reviewer" as owner
+rectangle "Runtime boundary / host-owned authority" #EDF7ED {
+  file "Versioned immutable policy" as policy
+  component "Host admission + input/context rules" as admission
+  component "Input judge + topic label" as input
+  component "Code-owned route validation" as route
+  component "One specialist\nmixing OR production" as agent
+  component "Output judge + code-owned release gate" as output
+  database "Accepted context only" as context
+}
+rectangle "Offline evaluation boundary / synthetic data only" #E8F0FA {
+  file "Synthetic cases + independent expectations\nReference answers / source labels" as cases
+  component "Evaluation harness\nDeterministic outcome and route checks" as eval
+  component "LLM auditor\nExplicit model / own circuit / deadline\nOne bounded case per call" as audit
+  component "Strict findings validation\nCase ID + allowlisted evidence references" as validate
+  file "Metadata report\nclear / review_required / inconclusive / unavailable" as report
+}
+owner --> policy : reviewed change
+policy --> route : enforce
+policy --> output : enforce
+policy --> admission : enforce
+admission --> input : admitted request + authorized context
+input --> route : observations, not permission
+route --> agent : allowlisted selection
+agent --> output : untrusted draft
+output --> context : accepted exchange
+cases --> eval
+eval --> admission : synthetic chatbot run
+eval --> audit : synthetic request + visible reply + stages + references
+audit --> validate : observations, not policy changes
+validate --> report
+report --> owner : review findings and remaining gaps
+note bottom of audit
+No web endpoint calls the auditor.
+Normal chat does not wait for an audit.
+Fixtures can also test the auditor directly with scripted outcomes.
+Discarded drafts and private judge reasoning are unavailable.
+No private chat capture or hosted tracing is enabled.
+end note
+note bottom of validate
+Unknown fields, mismatched case IDs and unavailable references fail.
+Answered cases without reference answers remain inconclusive.
+Provider failures cannot count as successful safety detection.
+Audit findings cannot rewrite test labels or runtime decisions.
+end note
+legend bottom
+Four runtime LLM roles; only one specialist runs on a turn.
+Fifth LLM role: post-run auditor. Ordinary accepted chat: three model calls.
+Boxes are logical boundaries, not separate process sandboxes.
+Post-run auditing cannot retract an answer already released.
+Durable production audit storage and incident ownership remain external requirements.
+endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
+@enduml

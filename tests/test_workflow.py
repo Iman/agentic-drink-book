@@ -24,7 +24,7 @@ def test_success_runs_all_gates_then_commits_and_audit_has_no_content():
         "input_rules",
         "load_context",
         "input_judge",
-        "generate",
+        "mixing",
         "output_rules",
         "output_judge",
         "commit",

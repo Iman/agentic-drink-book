@@ -12,8 +12,12 @@ if (Admitted?) then (yes)
       Omit whole records to fit the context budget.
     end note
     :input_judge;
-    if (Typed observations satisfy policy?) then (yes)
-      :generate;
+    if (Typed observations satisfy policy and route is valid?) then (yes)
+      if (Validated specialist?) then (mixing)
+        :mixing agent;
+      else (production)
+        :production agent;
+      endif
       :output_rules;
       if (Output checks pass?) then (yes)
         :output_judge;
@@ -39,7 +43,9 @@ endif
 stop
 legend bottom
 Provider errors, timeouts and invalid schemas fail closed.
-No graph loops, model-selected routes, automated revision or tool dispatch.
+Topic classification selects one allowlisted specialist after policy acceptance.
+No graph loops, automated revision, arbitrary route or tool dispatch.
 Screened memory remains untrusted data.
 endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

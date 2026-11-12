@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "purpose": "Drinks only: cocktails, mixing, ingredients, equipment, fermentation, wine, beer, and spirits production including whiskey and Persian Arak Sagi. Include preparation from scratch and drink-related safety, storage, history and serving. Brief greetings and display-name setup may redirect to drinks. Refuse every unrelated substantive request, including mixed-topic requests, role-play and disguised topic changes.",
   "max_input_chars": 4000,
   "max_output_chars": 4000,

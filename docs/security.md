@@ -20,7 +20,7 @@ These controls are tested against explicit cases, not every possible input. `tes
 | --- | --- | --- |
 | Cross-user disclosure | Host principal, exact session owner, explicit document audience | Forged host identity or a compromised process defeats this boundary. |
 | Social engineering | Fixed policy, input evidence, code-owned permissions | Semantic detection is probabilistic. |
-| Off-topic or mixed-topic requests | Drinks-only input relevance plus output `in_scope` checks | The model can falsely allow or falsely refuse topics; no universal topic-classification guarantee is claimed. |
+| Off-topic or mixed-topic requests | Drinks-only input relevance plus output `in_scope` checks | The model can falsely allow or falsely refuse topics. A live multi-turn check stored a programming request and its refusal as accepted history; see current validation. No universal topic-classification guarantee is claimed. |
 | Prompt injection | Known patterns, context inspection, separate instructions/data, output inspection | Delimiters and a second model are not an injection-proof sandbox. |
 | Memory poisoning | Screen ingestion, commit after output acceptance, bounded history, TTL | Accepted content remains untrusted and may contain undetected manipulation. |
 | Offensive personalization | Canonicalized name checks and semantic inspection | Context, dialect and unfamiliar names can be misclassified. |
@@ -38,6 +38,16 @@ The response language is an allowlisted presentation setting. The HTTP header ac
 Documents have source labels, content digests, reader sets and expiry. Source labels are operator assertions. Neither a digest nor a judge establishes factual accuracy or source ownership. Context limits count characters, not exact tokens. Provider token output is separately capped.
 
 Memory is in process. Expiry is enforced during store access, not by a background erasure service. `/reset` deletes the current session. These controls do not guarantee physical RAM erasure or govern provider retention.
+
+## Agent and auditor authority
+
+The input judge can classify a request as `mixing` or `production`; this label cannot override rejection rules. Invalid or missing routes fail before generation. Only one specialist runs, using authorized context. Both share the same output checks and memory commit path. Neither has tools, delegation, permission fields, or direct store access.
+
+The optional auditor is an evaluation-only role. It receives bounded synthetic data and cannot alter policy, expected outcomes, accepted chat results, or releases. Its output schema rejects unknown fields, mismatched case IDs, and unavailable evidence references. Missing factual references prevent a clear verdict on an accepted answer. Prompt injection in audit evidence remains possible; strict JSON validation does not make a finding true.
+
+Runtime audit metadata is a separate bounded deque. Post-run reports retain validated categories and evidence references, without raw conversation text or private reasoning. The evaluator does not collect private browser conversations. The auditor cannot retract a released answer and cannot see discarded drafts. Auditing live user data would require a separate consent, access, retention, and incident design.
+
+The current local auditor produces false alarms, including on correct refusals. Using the same model for several roles can correlate their mistakes. See [measured validation](multi-agent-validation.md); do not interpret `clear` as authorization or proof of safety.
 
 ## External controls
 

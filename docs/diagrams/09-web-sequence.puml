@@ -14,7 +14,7 @@ participant "LangChain + circuits" as adapter
 end box
 box "Model service" #FBE9E4
 participant "Judge role" as judge
-participant "Response role" as model
+participant "Selected specialist\nmixing OR production" as model
 end box
 User -> ui : open local app
 ui -> api : POST /api/session (same Origin)
@@ -27,49 +27,64 @@ alt boundary rejection
   api --> ui : 401 / 403 / 413 / 415 / 422
 else admitted HTTP request
   api -> graph : server Principal, conversation, message
-  group Safety net: input and context
+  group Host admission and input rules
     graph -> memory : owner, TTL, rate, busy checks
     graph -> graph : global cap + deterministic input rules
+  end
+  alt admission or input rules reject
+    graph --> api : static reply; no model call or memory commit
+  else eligible for context and review
+  group Safety net: context and input review
     graph -> memory : authorized bounded context
     graph -> adapter : inspect input
     adapter -> judge : fixed rubric + untrusted JSON
-    judge --> adapter : InputEvidence
+    judge --> adapter : InputEvidence + specialist topic
     adapter --> graph : schema-validated observations
-    graph -> graph : reduce risks, drinks scope, name, uncertainty
+    graph -> graph : reduce risks, drinks scope, name, uncertainty\nvalidate mixing / production route
   end
   alt input rejected or service unavailable
     graph --> api : static fallback; no generation/commit
   else input accepted
-    graph -> adapter : generate draft
-    adapter -> model : fixed drinks + selected language instructions\nuntrusted task data
+    graph -> adapter : invoke exactly one selected specialist
+    adapter -> model : fixed drinks + specialist + selected language instructions\nuntrusted task data
     model --> adapter : candidate
     adapter --> graph : buffered draft
     group Safety net: output
       graph -> graph : deterministic output rules
-      graph -> adapter : inspect exact candidate
-      adapter -> judge : output rubric + original context + draft
-      judge --> adapter : OutputEvidence
-      adapter --> graph : schema-validated observations
-      graph -> graph : safety + in_scope + uncertainty + quality
+      alt deterministic output rules reject
+        graph --> api : static fallback; no output judge or commit
+      else deterministic output rules pass
+        graph -> adapter : inspect exact candidate
+        adapter -> judge : output rubric + original context + draft
+        judge --> adapter : OutputEvidence
+        adapter --> graph : schema-validated observations
+        graph -> graph : safety + in_scope + uncertainty + quality
+        alt all output gates pass
+          graph -> memory : reauthorize + commit accepted exchange
+          graph --> api : inspected reply
+        else output rejected or service unavailable
+          graph --> api : static fallback; discard draft
+        end
+      end
     end
-    alt all output gates pass
-      graph -> memory : reauthorize + commit accepted exchange
-      graph --> api : inspected reply
-    else output rejected or service unavailable
-      graph --> api : static fallback; discard draft
-    end
+  end
   end
   api --> ui : buffered JSON reply/status\n200 for accepted/refused; 429 busy; 503 unavailable
   ui --> User : render plain text; retain failed request for retry
 end
 User -> ui : New conversation
 ui -> api : POST /api/reset + cookie + CSRF
-api -> memory : delete idle conversation; create new one\nretain server owner and rate history
-api --> ui : empty history + rotated CSRF
+alt active turn
+  api --> ui : 409 session_busy; preserve conversation
+else idle conversation
+  api -> memory : delete idle conversation; create new one\nretain server owner and rate history
+  api --> ui : empty history + rotated CSRF
+end
 note over adapter,model
 Three calls on a successful turn.
 No retries or cloud fallback.
-Separate judge and generation circuits.
+Separate judge and shared specialist generation circuits.
+Auditor is evaluation-only with a separate circuit.
 Failures and invalid evidence fail closed.
 end note
 note over api,memory
@@ -77,4 +92,5 @@ Cookie identifies an anonymous local browser, not a verified person.
 Process-local state expires and disappears on server restart.
 No public identity service or shared distributed quotas are deployed.
 end note
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

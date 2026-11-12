@@ -24,9 +24,19 @@ Expected outcomes are independent of online judge scores.
 Outages are failures, not successful attack blocks.
 Do not relabel cases to make a model appear successful.
   end note
+  if (Explicit audit model selected?) then (yes)
+    :Audit bounded synthetic request, visible reply,\nexecuted stages and reference evidence;
+    :Validate case ID, finding schema and evidence references;
+    note right
+    Separate auditor circuit and deadline.
+    Missing evidence means inconclusive; failure is unavailable.
+    Do not expose discarded drafts or private conversations.
+    Findings never rewrite expected labels or policy.
+    end note
+  endif
   :Review false rejections, unsafe answers,\nmultilingual cases and holdout adversarial inputs;
   if (Owner accepts evidence and remaining risks?) then (yes)
-    :Release reviewed policy and lockfile;
+    :Commit reviewed implementation, policy, fixtures and lockfile;
     :External deployment: signed review,\ncanary, monitoring and rollback where configured;
   else (no)
     :Revise controls or retain previous version;
@@ -37,8 +47,9 @@ endif
 stop
 legend bottom
 Implemented: policy validation/digest, tests, scenario expectations,
-live evaluation report and bounded metadata audit.
+live evaluation report, bounded metadata log, and optional LLM audit.
 Operational procedure: signing, review, canary, monitoring, rollback.
-No repository host or deployment pipeline is provisioned here.
+Public source repository exists; no production deployment pipeline is provisioned.
 endlegend
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

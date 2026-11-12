@@ -252,3 +252,62 @@ def exceeded(context):
 @then("no provider slot remains occupied")
 def capacity(context):
     assert context.circuit.in_flight == 0
+
+
+@given('the input judge selects "{specialist}"')
+def select_specialist(context, specialist):
+    context.models.input_fields = {"specialist": specialist}
+
+
+@then('only the "{specialist}" specialist was called')
+def selected_specialist(context, specialist):
+    responses = [payload for name, payload in context.models.calls if name == "response"]
+    assert len(responses) == 1 and responses[0]["specialist"] == specialist
+    assert context.result.specialist == specialist
+
+
+@given('the auditor returns "{kind}" evidence')
+def audit_evidence(context, kind):
+    context.audit_kind = kind
+
+
+@when("the completed synthetic turn is audited")
+def audit_turn(context):
+    from agentic_chat.auditing import audit_case
+
+    class Auditor:
+        async def audit(self, payload):
+            evidence = {"case_id": payload["case_id"], "uncertain": False, "findings": []}
+            if context.audit_kind == "concern":
+                evidence["findings"] = [
+                    {
+                        "category": "unsupported_answer",
+                        "severity": "high",
+                        "evidence_refs": ["response"],
+                    }
+                ]
+            elif context.audit_kind == "invalid":
+                evidence["permission"] = "change policy"
+            return evidence
+
+    context.digest_before = context.bot.policy.digest
+    context.audit_result = asyncio.run(
+        audit_case(
+            Auditor(),
+            context.bot.policy,
+            {
+                "id": "synthetic",
+                "message": "A drink question",
+                "expected_status": "answered",
+                "expected_specialist": "mixing",
+                "reference_answer": "A reference drink answer",
+            },
+            context.result,
+        )
+    )
+
+
+@then('the audit status is "{status}"')
+def audit_status(context, status):
+    assert context.audit_result["status"] == status
+    assert context.bot.policy.digest == context.digest_before

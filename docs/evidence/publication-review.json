@@ -1,0 +1,348 @@
+{
+  "recorded_at": "2026-11-12T03:13:16.322350+00:00",
+  "base_commit": "a10a9c1aef033b6d2cc08209989cb8b16e5210ab",
+  "scope": "Pre-commit review of approved multi-agent code and updated L0/L1/functional/detail diagrams",
+  "tests": {
+    "pytest": {
+      "total": 120,
+      "passed": 120,
+      "failed": 0,
+      "skipped": 0
+    },
+    "behave": {
+      "features": 6,
+      "scenarios": 39,
+      "steps": 244,
+      "failed": 0,
+      "skipped": 0
+    },
+    "react": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "pytest",
+        "--color=no",
+        "--junitxml=reports/publication-pytest.xml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "behave",
+        "--no-color",
+        "--format",
+        "progress",
+        "--junit",
+        "--junit-directory",
+        "reports/publication-bdd"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "ruff",
+        "check",
+        "src",
+        "tests",
+        "features",
+        "scripts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "ruff",
+        "format",
+        "--check",
+        "src",
+        "tests",
+        "features",
+        "scripts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "agentic-eval",
+        "--suite",
+        "regression",
+        "--output",
+        "reports/publication-offline-regression.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "agentic-eval",
+        "--suite",
+        "holdout",
+        "--output",
+        "reports/publication-offline-holdout.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "agentic-eval",
+        "--suite",
+        "localization",
+        "--output",
+        "reports/publication-offline-localization.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/render_diagrams.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "build"
+      ],
+      "exit_code": 0,
+      "note": "Sandbox DNS failed initially; authorized network retry completed."
+    },
+    {
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "scripted_evaluations": {
+    "regression": {
+      "mode": "scripted_offline",
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "policy_digest": "2cc434043144675f9f0a4704e46e7ddbe68a72d5bfcbc9afc5390edfdb0fb4d8",
+      "prompt_digest": "38d6a967cbbf0ae653f1868048297f0743212f4d0fb14504accb736b8877c74d",
+      "dataset_sha256": "367cafdee61b901457cc0a0f6dab2dcbcad2364a04a4498a3c444ea0763d8963"
+    },
+    "holdout": {
+      "mode": "scripted_offline",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "policy_digest": "2cc434043144675f9f0a4704e46e7ddbe68a72d5bfcbc9afc5390edfdb0fb4d8",
+      "prompt_digest": "38d6a967cbbf0ae653f1868048297f0743212f4d0fb14504accb736b8877c74d",
+      "dataset_sha256": "c63467ed7f007865c3cb5450ba94031284413958129e5f8e8667be2723740c5d"
+    },
+    "localization": {
+      "mode": "scripted_offline",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "policy_digest": "2cc434043144675f9f0a4704e46e7ddbe68a72d5bfcbc9afc5390edfdb0fb4d8",
+      "prompt_digest": "38d6a967cbbf0ae653f1868048297f0743212f4d0fb14504accb736b8877c74d",
+      "dataset_sha256": "f606b6e7e72de97236634c807fe8251892d046121824d7722fa8b7e7c542c8a4"
+    }
+  },
+  "diagrams": {
+    "plantuml_sources": 13,
+    "svg_renders": 13,
+    "png_renders": 13,
+    "excalidraw_scenes": 2,
+    "elements_per_scene": 46,
+    "offline_catalogue": "docs/diagrams/index.html",
+    "checks": [
+      "PlantUML syntax",
+      "SVG parsing and accessible titles/descriptions",
+      "globally unique inline SVG IDs",
+      "PNG/SVG proportions",
+      "no script or external display assets in HTML",
+      "Excalidraw unique IDs, positive text bounds and no embedded files"
+    ],
+    "visually_inspected": [
+      "L0",
+      "L1",
+      "functional",
+      "context",
+      "web sequence"
+    ]
+  },
+  "persian_readme": {
+    "renderer": "GitHub Markdown API",
+    "rtl_wrappers": 1,
+    "ltr_code_blocks": 8,
+    "h2_headings": 7,
+    "tables": 1
+  },
+  "known_limits": [
+    "Historical local auditor matched 2/8 expectations; no new live inference in this publication check.",
+    "Incorrect Persian Negroni and accepted-refusal retention remain open.",
+    "No new browser visual, Excalidraw import, live OpenAI, sustained-load or penetration testing.",
+    "Logical role boundaries share a process; public deployment controls are not provisioned.",
+    "Obsidian memory vault unavailable."
+  ],
+  "prior_live_evidence": "docs/evidence/multi-agent/summary.json",
+  "privacy": "Raw local reports excluded. Published evidence contains only synthetic case identifiers, metadata and relative source paths.",
+  "source_sha256": {
+    ".gitignore": "97ee08ea5391c38468eacd78141947952a93673a54a4c35e0d18f00d99bed2c2",
+    ".python-version": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d",
+    "AGENTS.md": "430eee7c1338d5f579cd0b1e741b0b59e4c37d5bb1946c141a894fb519bf32f9",
+    "README.fa.md": "6caefcbac33898ba6de58deeb7324a206542c0a072977d6c3d9d3d073b117952",
+    "README.md": "82ee20995459fc6cde398f5faf17db4dddb71c5be49c4ce8d06703224ffbe8cd",
+    "chatbot-test-prompts-fa.txt": "15be110fbb5dcb2fd9f21f71a5d2d21820a62691b0e7e84717029b149b37865e",
+    "chatbot-test-prompts.txt": "285ac73c762e8d4825ba32e1e2e4e298962d68a7ce2675cf70dd408a5f982f88",
+    "docs/architecture.md": "7458d135dc0c9995796119378b5cd87fc066eeda8387b428024aa0b5d9b796ae",
+    "docs/diagrams/01-system.png": "d8c4169d01a1e483f7a19f60ac59a1ddbb70cace9e93844c873e6165551d1ed0",
+    "docs/diagrams/01-system.puml": "c9747e8c652f0372c33a2863298bc4a15919a836cfa47697e761007a472330e1",
+    "docs/diagrams/01-system.svg": "f77681131e07752235c3ddb2a5747cd46edfa842ee274634a170260fc1a88e72",
+    "docs/diagrams/02-turn-sequence.png": "74194474f5271930cf22745b19bc37ad4b74f022ef084bad8ba3b7d1399cd879",
+    "docs/diagrams/02-turn-sequence.puml": "4a7f3f0e0948b2613a4aa4f81ed112690c942c70c66003a32ac3acf762ec1888",
+    "docs/diagrams/02-turn-sequence.svg": "c3ed93d9219a618633b1302c40ad94623a1331a1db25883dd180255ca1816a75",
+    "docs/diagrams/03-workflow.png": "76336b0b4c813a64d772fe1acee75659e945311d473a99acd7b1b91a54ef2170",
+    "docs/diagrams/03-workflow.puml": "f8092fff019931209dcebb8ad26268939950f72d95359730a819269c16895681",
+    "docs/diagrams/03-workflow.svg": "16ef81a053e03777f6096262eb7f88fb22366978a5a4e39df953ce81743b359c",
+    "docs/diagrams/04-circuit-breaker.png": "d9302161c0e55237ddc569d47b9135e4dc3c8b368a761187586a6b9ec758a6ac",
+    "docs/diagrams/04-circuit-breaker.puml": "30b010124fdbadde5bd5ff194e28a3fe7ef0f1372530f836d5a3fdcbfb172fe1",
+    "docs/diagrams/04-circuit-breaker.svg": "99776dce4a9795e50992d19829e6c0561dd0338efeeb93bac592eebe9b1f5922",
+    "docs/diagrams/05-context.png": "6f60cb917c01bcc34147e32b2ff4d84e99156fed0a34053b235475dfc33ecbd7",
+    "docs/diagrams/05-context.puml": "37fcbd751dc8300f034dd611a49c8226618eb123e5234b74c9bba1bcd2494fdc",
+    "docs/diagrams/05-context.svg": "4e61213816b53b13ee687033e39930aea59941cae51d8519ea576109420ba45c",
+    "docs/diagrams/06-governance-evaluation.png": "77564302b9ebec47c6b04df38f2c29a965fd41530bec401ffe9d92d9b2eb386a",
+    "docs/diagrams/06-governance-evaluation.puml": "2c5701e9588949d76b24a2a04bb8d38e7bb30710fcf45e1d001b04209450a800",
+    "docs/diagrams/06-governance-evaluation.svg": "3c973167068902908eba483de7c1ada53b139c8bc5bbea6f6e93482f4f609b32",
+    "docs/diagrams/07-web-boundaries.png": "13e5a752df0dcc138a419c49e9c4686e8331c2559faf659a69cd514ed523afaa",
+    "docs/diagrams/07-web-boundaries.puml": "c2f766d4c62af9ff56223f975f48d53f20f513ab559dbc42aaf6a39eb94a8d75",
+    "docs/diagrams/07-web-boundaries.svg": "e878eb53b07df797edf68a2ec800327b838323fadb37624e4d7c89a18cb8168b",
+    "docs/diagrams/08-judge-safety-boundary.png": "6bba54d4c793a3a1f6e0066a1aa46b5df9f366fe6a46612d1941ad8710c89ccd",
+    "docs/diagrams/08-judge-safety-boundary.puml": "8611f54ced260a85875dfac618df19236ce99e92713016babbc4da23a6f94522",
+    "docs/diagrams/08-judge-safety-boundary.svg": "f6967ce0423862cc5a5efd7252b86564c55786d7ce06a995ce2a97eb4795f998",
+    "docs/diagrams/09-web-sequence.png": "6f910638fd3d2733fbe0295b13b28b29be038dfd9b7ebb00b809ed1442f5eb7b",
+    "docs/diagrams/09-web-sequence.puml": "bfdeb3396677554eb1ffcc4b5599917ba27e1fc095b60728b548843b9a136926",
+    "docs/diagrams/09-web-sequence.svg": "c4b5e367ff9eb991d9d2d987ec2a28789834bdabcdef4600ae568ceb4a63a6f8",
+    "docs/diagrams/10-functional-flow.excalidraw": "37f083c41882a5ff51c7f25c46248bd8e7ade0764d4a212d9abf3ad6fc254256",
+    "docs/diagrams/11-trust-boundaries.excalidraw": "cee01e6c850d5f60c2f0c9ce4639d14d4ddf05f02ec77c2bdbe966da712755f4",
+    "docs/diagrams/12-audit-governance.png": "0e9fdf535184445ca8856a16c2d86a509665d9695698bd31131da0ab4a6b7373",
+    "docs/diagrams/12-audit-governance.puml": "abf37d18deed1bb6d0f176fb9f8e1fcc0fd969667d4e7fa0f066fd876e859645",
+    "docs/diagrams/12-audit-governance.svg": "31e0b74a846a9124fa3853b8c33d862e6d95013ce9837d463552676ab728e64d",
+    "docs/diagrams/13-l0-system-context.png": "57dece31bbc7db94372d60a2e241c4d974cacb8bf6f773cf8e23bcb14856ad32",
+    "docs/diagrams/13-l0-system-context.puml": "2633e538676e3ea57be1aa4adae7f17a633b4fe6824ae436875c2aed08cafa7c",
+    "docs/diagrams/13-l0-system-context.svg": "e8e1fbfa98a39741e10e75760ddf729b1e564d35a3dcd763a9ed42b5994a93bb",
+    "docs/diagrams/14-l1-runtime-components.png": "6498b5f64e24812497b94eac01dda536d4ec69941953f2ab6357d7debf07ec8e",
+    "docs/diagrams/14-l1-runtime-components.puml": "301d8213f82f86ad1eb2dce3bd6be15517a2d3aa0b87d128a6d32af46d5d4773",
+    "docs/diagrams/14-l1-runtime-components.svg": "ec1da9b4585124ace452b0628b27d3d0e7bbd01859df1cf1905b3eb170c645a1",
+    "docs/diagrams/15-functional-flow.png": "755538b9dae43fb07e72126054539fbd1c5704a9c1a8a96c5fad990cb5bc781c",
+    "docs/diagrams/15-functional-flow.puml": "2102a06dbf72b6dfc95006374b2d37727df61534303b65cfc6d0e4f08137a197",
+    "docs/diagrams/15-functional-flow.svg": "da1e378fc58ca4d6e29fbc431e49a38a3e7f7f2a6088720fc7a8b451c086b9b3",
+    "docs/diagrams/README.md": "8e7d613cc71d5a514f8962b368abc6dfdaeb1ee666ac202ef354533bc693ea77",
+    "docs/diagrams/index.html": "90cb27aa7233cf7ecd0b577af7d4274cd738d9cd19ef3e9610a3ef224b69d386",
+    "docs/localization.md": "5ba0b9400805164a8e39fe1d7e7694a7518878938c469e7b65197c5d65bbb7b2",
+    "docs/multi-agent-proposal.md": "935c09492fc8d835da810fca1d87c59bd0c6fb6be8ad91b67c313e65a561da1a",
+    "docs/multi-agent-validation.md": "4241b6e02d1b0c7d5aa58f7d8b1334b78436452bb4a5378d50eea89d7b66d4d4",
+    "docs/publication-review.md": "f6d0d8913d58c99e7b8f53af2609cf9a681b77db3a7d51c3e4ce63a304a2ba1a",
+    "docs/release-review.md": "147a9c4ab1c27b8af4a98dc3b001d3cea33bf3b5b2cee2e464ffad26db008046",
+    "docs/security.md": "0abf85a84c39c8c18e1ed19bfbe3b0735405193fc146b06c930b7a695536ac70",
+    "docs/teaching.md": "4c8c11469d70047b7e95c39054146445f097690523ac5b28700ec69e696c47f7",
+    "docs/validation-policy-1.md": "2ea86351b7bd50b85baf60fe2c67e65f7a938d80b2735b15cc34e0f2c512ba8a",
+    "docs/validation.md": "d3718f8ab9a760d8ca78bdb869dd3da712974d5fc2de2a1bdb246cb47d408366",
+    "features/chat_safety.feature": "bf1fcc5694269697bec25cb81c93f8a062f99a6f81d9dceb26057fc2b82bf4c9",
+    "features/circuit_breaker.feature": "dd5e263a1a01d452afd23e957052cb42fab4b21d7c923113b5038a7b43e67ad4",
+    "features/context_isolation.feature": "b436ce86a565f1c59aefdbb00ef52f3565ba575ffd0fe0f490edd403301a3e29",
+    "features/drinks_scope.feature": "854cb038a4e360908c0d371d728ab10ccd0abe3857bba142326356e231bd22c8",
+    "features/localization.feature": "47e2e5de1f070f39821a80f71830158b908d8720d91d5739898db57a6b3b94e0",
+    "features/multi_agent.feature": "5385ff5116ce4d5edb4b774313af3608614cb9bac24ca454afcde9cf788ba182",
+    "features/steps/chat_steps.py": "8baab3755d43d3da0482baae17570ba2bf039c44a9497f450e011c41897d5429",
+    "frontend/index.html": "b1c12f8faa6d236d35f1bde6b83940ffdffca790d54fea58c77ccf6c8ce1a9ef",
+    "frontend/package-lock.json": "c43b7205f4234ad5bd0943b50d19ca8ef719de6f0ac066dff274b0b79639885d",
+    "frontend/package.json": "0595e146786858c95488ce4716b5da8b0ce010fec0509dce0e77fcaf5d573258",
+    "frontend/src/App.jsx": "ad5059844a200afb93955ddf2dc167bcf7a763212d7be57609101045cceb16ad",
+    "frontend/src/i18n.js": "ebf4ecaf5ead4aba741c35447769ac56dc10f34ee1be736c64efe14c9589de20",
+    "frontend/src/main.jsx": "3d73feae7a88344f4c9260a149ce0d50e00c7390232f566ec761171d747add79",
+    "frontend/src/style.css": "50d94b6cdc488bf36c94f40b86e5e593509e93748856f46d06bbc5b39e26ff65",
+    "frontend/tests/i18n.test.js": "a8ce052568d1acc5ba3743e29dc937a86dc34dee5bea32cc3f674774e84846d4",
+    "frontend/vite.config.js": "00d5d02a18cb3ed293d2eba29c1ce064609989582347f62ee9433955de4c9e1e",
+    "pyproject.toml": "c2a8d2f318bfc44c786abb67eabd7c4ede642f4255b8bd8475f245376f95141c",
+    "scripts/check_commit_message.py": "89d08cc86b58c9ac488402a8610d640096cbf091558c65853bb3763e088e5595",
+    "scripts/render_diagrams.py": "c82fee2d75a65e9905dbd922153062a04a6fee479792b9f33918d91634bbdb03",
+    "scripts/start.sh": "d17f44043a4692466655587a4c8a5639b208f3bc3abeca695f7938ee2d88e50b",
+    "src/agentic_chat/__init__.py": "3a878bc8f11485e6142ac6aabbb54c53c99cdcb6555dcc2bf5eae32823d92c07",
+    "src/agentic_chat/auditing.py": "164bd3560d6b9c7843407f6b495f0fef941036c1264325a9c9651b3406f122de",
+    "src/agentic_chat/cli.py": "6412efaf8edea8bb2cc4b833fa74c6228e2440e3f4da85ea15f1a74ad5f85ede",
+    "src/agentic_chat/context.py": "a7b6628458d4ab38de8faa8d9091f8513996a5bcb38e608b24aae89c0110d7a4",
+    "src/agentic_chat/eval_audit.json": "6b944c18fec54a60f1080fba8a025a86c7fa12906f349b987fce068c07efe18b",
+    "src/agentic_chat/eval_cases.json": "367cafdee61b901457cc0a0f6dab2dcbcad2364a04a4498a3c444ea0763d8963",
+    "src/agentic_chat/eval_holdout.json": "c63467ed7f007865c3cb5450ba94031284413958129e5f8e8667be2723740c5d",
+    "src/agentic_chat/eval_localization.json": "f606b6e7e72de97236634c807fe8251892d046121824d7722fa8b7e7c542c8a4",
+    "src/agentic_chat/evaluation.py": "a5b866b0417d05a23efc157bc69b0488abe1e102326ee97da97918056bafeeb8",
+    "src/agentic_chat/localization.py": "a71d9ecb2f58a4b005d9af5771557b46e7f4c20ae714d856df80d8dbf8908b51",
+    "src/agentic_chat/policy.json": "7006b349819a8fe77f50405128ec10b2e82eafacc9f8a8f08818f6456510209d",
+    "src/agentic_chat/policy.py": "3b4c5621af7f28aa9b0f26a19fc5a951b68e730d4a674f33fe4df71cb99ddc4d",
+    "src/agentic_chat/providers.py": "07d382a9bd7b7f91dcbf297428eb8bb590bdf44a233413a807eacbbbe6bf1cc6",
+    "src/agentic_chat/resilience.py": "1ba28b475bd4a5b963e0ef2e609ba034cd96e5760e3de25e44e4711690688d44",
+    "src/agentic_chat/testing.py": "d16afa203d320d4751aba5cab45f78d08eb5895a5e18cfc1ec33a65c0771cebb",
+    "src/agentic_chat/web.py": "015b3cea7196cde1d35f892d4c92ffc148bcf1b02f75d09fedaffbc519d7cc58",
+    "src/agentic_chat/workflow.py": "5238fb63874ef0677cd89c60d402c972246c42a9fde07d47d657342a217d38af",
+    "tests/test_agents.py": "84bcdb2f060585a706bc5111949354f40019748abde3fc048eb9a0a7130fe0f4",
+    "tests/test_auditing.py": "a373129f82bb2eb66e4647568dd517a852a6cad3f2c5e397858fcf60e06bfb3d",
+    "tests/test_drinks_scope.py": "987f40e60210d69a42e91e64b293ae7e5f37ca5b5d2413f88eee7e9a8cec3f14",
+    "tests/test_evaluation_cli.py": "9cbefcb5a9c122ff2eb4875d67b5764e46268cdc871b396e9114a4fe512187a2",
+    "tests/test_governance.py": "80fefcfcea9d115e45e1c9dd34e8d0b7584133c5e75f2f39e49db5a73ccec4b4",
+    "tests/test_policy.py": "ad430f199ed8e3394b33dcd7fccdee3ca9988f2935d84043b45c7c12660077c9",
+    "tests/test_providers.py": "9f13ab1eadf443aa3734fe37a4f239ad311cf516e7f3dc41710860fdcfee649e",
+    "tests/test_resilience.py": "1291dac52467828bb7faa30dd3b0e2bdc76c7e67fa05a5b32b3c60e1de01cb1e",
+    "tests/test_web.py": "f19c291348a648e3398b01ac1cde39c93d67a984b7b83ff5c6c9b6332d250bf0",
+    "tests/test_workflow.py": "07ac0f858c60eadb3fe4cf5e9d2471317ea48c241573b7a475dff4a3a63c124f",
+    "uv.lock": "b466bb5a7c92d1a9442d0801999ca8ec08ec1986d11efd169986df3bbc106286"
+  },
+  "raw_junit_sha256": {
+    "pytest": "fa7bab19c6a61f083406baa5791b981662900e33d0fa57d525f1ed1737af6825",
+    "TESTS-multi_agent.xml": "32e764a0f0d4e3443bb41c23a1eea1c43a5c274854da93a6805cdc8581bd4b8e",
+    "TESTS-circuit_breaker.xml": "46ce008913308bb07871d21c282afd6c97915c415796e70b778a4568d3ca4cee",
+    "TESTS-drinks_scope.xml": "17301deedf33b6c99f7139d528a426cc98d15956733e73b9a4acd81449eb94ea",
+    "TESTS-chat_safety.xml": "e4f787e78b7bdd2cb5a6543d36f5cebc5dd05d8b51430f34c2248d733e7650cd",
+    "TESTS-localization.xml": "71e387b3968d4f90f312311c02d9aee341a5935114854b1687f174190677a5b9",
+    "TESTS-context_isolation.xml": "59f14ae7a3613151e6b7c542c293e9f55e60dbcd56c08c2908bf06f14aea0eac"
+  },
+  "file_scan": {
+    "changed_text_files": 79,
+    "selected_pattern_matches": 0,
+    "scope": "Known credential shapes, available environment-secret values, personal absolute paths, prohibited formatting and local Markdown links; not an exhaustive audit."
+  }
+}

@@ -9,10 +9,10 @@ rectangle "Untrusted data" #F6EBDC {
 }
 rectangle "Deterministic safety net / same application process" #EDF7ED {
   component "Input rules\nsize, characters, secret patterns\nname and injection patterns" as ir
-  component "Strict InputEvidence validation\ninput_decision()\nrisks -> scope -> name -> uncertainty" as id
+  component "Strict InputEvidence validation\ninput_decision()\nrisks -> scope -> name -> uncertainty\nvalidate specialist classification" as id
   component "Output rules\nsize, characters, secrets\nunsuitable greeting patterns" as outr
   component "Strict OutputEvidence validation\noutput_decision()\nsafety, name, scope, uncertainty, quality" as od
-  component "Release exact inspected reply\ncommit accepted exchange" as release
+  component "Recheck owner; commit accepted exchange\nrelease exact inspected reply" as release
   component "Static refusal / neutral redirect\nor unavailable response\nno memory commit" as stop
 }
 rectangle "Judge boundary / advisory contract" #F3EAF6 {
@@ -21,13 +21,13 @@ rectangle "Judge boundary / advisory contract" #F3EAF6 {
 }
 rectangle "Provider call boundary / client-side adapters" #FBE9E4 {
   component "LangChain model calls\njudge circuit: capacity, deadline\nslow-call discard, cooldown, one probe" as calls
-  component "Generation circuit\ndraft generation under fixed rules" as generation
+  component "Generation circuit\none mixing or production agent\nfixed specialist rules + language" as generation
 }
 data --> ir
 ir --> ij : rules passed
 ij <--> calls : request / schema evidence
 ij --> id : observations, never permissions
-id --> generation : accepted
+id --> generation : accepted + allowlisted specialist
 generation --> draft
 draft --> outr
 outr --> oj : rules passed
@@ -50,4 +50,5 @@ A model can misclassify data or be manipulated.
 Schema validity is not factual or safety assurance.
 Live evaluations measure observed behavior separately.
 end note
+footer Agentic Drink Book | Policy 2.1.0 | Model judgments remain fallible
 @enduml

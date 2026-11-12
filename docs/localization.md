@@ -1,5 +1,7 @@
 # English and Persian
 
+This records the earlier localization change. See [multi-agent validation](multi-agent-validation.md) for current routing, audit, and test results.
+
 ## Use the language selector
 
 Open the local web app and choose English or Persian from the Language selector above the

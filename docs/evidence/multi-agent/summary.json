@@ -1,0 +1,212 @@
+{
+  "recorded_at": "2026-11-12T01:21:25.629449+00:00",
+  "baseline_commit": "a10a9c1aef033b6d2cc08209989cb8b16e5210ab",
+  "scope": "Approved bounded specialist routing and optional synthetic LLM audit; local working tree",
+  "checks": {
+    "pytest": {
+      "command": "uv run --no-sync pytest --color=no --junitxml=reports/multi-agent-pytest.xml",
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "behave": {
+      "command": "uv run --no-sync behave --no-color --format progress --junit --junit-directory reports/multi-agent-bdd",
+      "features": 6,
+      "scenarios": 39,
+      "steps": 244,
+      "failures": 0,
+      "skipped": 0
+    },
+    "react_dom": {
+      "command": "npm --prefix frontend test",
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0
+    },
+    "lint": {
+      "command": "uv run --no-sync ruff check src tests features scripts",
+      "exit_code": 0
+    },
+    "format": {
+      "command": "uv run --no-sync ruff format --check src tests features scripts",
+      "exit_code": 0
+    },
+    "python_build": {
+      "command": "uv build",
+      "exit_code": 0,
+      "note": "First sandbox attempt could not resolve hatchling; authorized network retry completed."
+    },
+    "frontend_build": {
+      "command": "npm --prefix frontend run build",
+      "exit_code": 0
+    },
+    "plantuml": {
+      "command": "plantuml --check-syntax docs/diagrams",
+      "sources": 10,
+      "exit_code": 0,
+      "renders": "SVG/PNG dimensions checked; workflow and audit PNG visually inspected"
+    },
+    "excalidraw": {
+      "scenes": 2,
+      "elements_per_scene": 46,
+      "checks": "JSON structure, unique IDs, no embedded files, positive text bounds; editor import unverified"
+    },
+    "persian_readme": {
+      "renderer": "GitHub Markdown API, gfm mode",
+      "rtl_container": true,
+      "ltr_command_containers": 8,
+      "h2_headings": 7,
+      "tables": 1
+    },
+    "changed_text_scan": {
+      "files": 59,
+      "matches": 0,
+      "scope": "Known private-path, credential, attribution and prohibited-formatting patterns only; not an exhaustive secret audit."
+    }
+  },
+  "live_commands": {
+    "chat_suites": "uv run --no-sync agentic-eval --live --suite SUITE --provider local --base-url http://127.0.0.1:11434/v1 --model gemma3:4b --output reports/multi-agent-live-SUITE.json",
+    "audit_fixtures": "uv run --no-sync agentic-eval --live --suite audit --provider local --base-url http://127.0.0.1:11434/v1 --model gemma3:4b --audit-model gemma3:4b --output reports/multi-agent-live-audit.json",
+    "audited_chat": "uv run --no-sync agentic-eval --live --suite localization --provider local --base-url http://127.0.0.1:11434/v1 --model gemma3:4b --audit-model gemma3:4b --output reports/multi-agent-live-audited-chat.json"
+  },
+  "observed_exit_codes": {
+    "live_regression": 0,
+    "live_holdout": 0,
+    "live_localization": 1,
+    "live_audit": 1,
+    "live_audited_chat": 1
+  },
+  "cli_regression": {
+    "before": "Three scripted CLI regression tests failed with TypeError after valid reports; console observation, no retained failure artifact.",
+    "after": "All three scripted CLI regressions pass in the final suite; audit-outage exit path also tested."
+  },
+  "diagnostics": {
+    "scope": "Synthetic rerun returned a model-authored refusal to the programming request but status answered; not substantive programming assistance.",
+    "recipe": "Synthetic Persian Negroni rerun substituted coffee liqueur and lemon juice for reference ingredients.",
+    "raw_synthetic_replies": "Retained locally only; not included in public evidence."
+  },
+  "limitations": [
+    "Small synthetic sets; no general safety or accuracy estimate.",
+    "Audit fixture expectations await independent human calibration.",
+    "Scope-status/retention and Persian recipe errors remain open.",
+    "No new live OpenAI, browser visual, editor import, sustained-load or penetration checks.",
+    "Raw JUnit reports remain local because they include workstation paths.",
+    "Obsidian project memory unavailable."
+  ],
+  "privacy": "Only synthetic case identifiers and outcome metadata copied; raw logs and responses excluded. No real identifiers substituted because no real captures are published.",
+  "source_sha256": {
+    "AGENTS.md": "430eee7c1338d5f579cd0b1e741b0b59e4c37d5bb1946c141a894fb519bf32f9",
+    "README.fa.md": "125f6305406348c48114c4420c963ea84aad71150965caabb2e0d69ef03a8bac",
+    "README.md": "168a40c8df525f324b54431d42bae2a91e87bb2b33c8052e58b87a8a90d36d0c",
+    "docs/architecture.md": "aafa60ada17441d2d8b243a0c87fb3ec6dc4da9c23c842352a9c3a5b0169a3da",
+    "docs/diagrams/01-system.png": "3fdeb76e3a409e73a79c49db7bdcb2a927b6ba7b4d341881f49a08a28949fca0",
+    "docs/diagrams/01-system.puml": "83708e6772e22f8d3b100c83eb02058f3d970a496621753f52e83c3ebe033a5b",
+    "docs/diagrams/01-system.svg": "1713c4116354ad36048a6dbba3175cfa4340375135856347e06f8debc1029ebb",
+    "docs/diagrams/02-turn-sequence.png": "8de9177592bba42e6728652b3892f6fab5cff0aaaf26919ea9bafdb9295305b2",
+    "docs/diagrams/02-turn-sequence.puml": "9c04d9dc291446cdc752eae9ec97d1d551ade546bf5b4321a782bfa1403d27f4",
+    "docs/diagrams/02-turn-sequence.svg": "fbcb7c4f660b96f2586992ee9de74c2a231aa04f1c69ec4306d39a409bba2ff2",
+    "docs/diagrams/03-workflow.png": "db46359c247e1465a1162a2b4ae96d22df8ec88a7e75a394bb34b6a23fbffd78",
+    "docs/diagrams/03-workflow.puml": "92c49d8c81638cd71ef210174c78da24f484cdfcdc1843b82132ca6b2fec61a4",
+    "docs/diagrams/03-workflow.svg": "53ac130f8db619908ed3a37d749dfb8b5188027f23a5d76169b0df97ceeeb0dd",
+    "docs/diagrams/04-circuit-breaker.png": "20cd9204c14d4d9e523cf6080c17b3be2748c9648fa1e9c99d33ad56dfb16113",
+    "docs/diagrams/04-circuit-breaker.puml": "80c3bfa1daa78af93f450b0a3fb1e12ec6f2a690b00b9a2774f22cc339adcbd6",
+    "docs/diagrams/04-circuit-breaker.svg": "2df29b8dfb02911b0240557720ce384798522e89c7473606298e48a446749236",
+    "docs/diagrams/05-context.png": "4ca4b726238b451943ef1b8cff50ac3eedca55755e75131f226796fb8eff15a0",
+    "docs/diagrams/05-context.puml": "8c0451ca32663e96af7931a252f1e440e409baa1c022e3d28ea6f53cee87ba2e",
+    "docs/diagrams/05-context.svg": "70af73e22ec71a07b7fc5180125e3e7c6124edba2a2345adbe197fd3f44503be",
+    "docs/diagrams/06-governance-evaluation.png": "50663d6310ab51ecf797d32dc47ba57b9756d06799de931106fc55f79e5b10d8",
+    "docs/diagrams/06-governance-evaluation.puml": "2ec16c79761d472847ae8db27610f2155e9dbfe786cb35a62bb177eaca92323e",
+    "docs/diagrams/06-governance-evaluation.svg": "84b9b8b448243da532aeb99396acf981107cdfc2867adc1795535fd8a9ca76fe",
+    "docs/diagrams/07-web-boundaries.png": "a6c69259fae46904298dc4e8840238f4c197cf182a1fdffe7a6b977831b16c4e",
+    "docs/diagrams/07-web-boundaries.puml": "4377a07c00c73de0ef423d3cc5dee8511f52cee08d00936e1514f6f3a2a8cc7c",
+    "docs/diagrams/07-web-boundaries.svg": "fc41dac43ae194728ef1ab702fbc53e22e36a59de94e4784f33402ee6b2e695f",
+    "docs/diagrams/08-judge-safety-boundary.png": "642d188720f6c3e79aac37769ed1bab63ef5de66598a7bcf5cc086747717a272",
+    "docs/diagrams/08-judge-safety-boundary.puml": "8a34ab43be2de72c827e607d7b9233391ad9e31a6fc3f57ef3c23f1738fc9e2b",
+    "docs/diagrams/08-judge-safety-boundary.svg": "82e1978efcac87a6ece52ac3ea1b409f305afadeac9d4977749a9df44abfb823",
+    "docs/diagrams/09-web-sequence.png": "25e93994388ae42796245c91da795e3a783aad7c99e7fed855cadb129d130400",
+    "docs/diagrams/09-web-sequence.puml": "2ba1858414becb1f61926e4723b9aa0befe6adbec1491f5a4ce4e17d22bf311e",
+    "docs/diagrams/09-web-sequence.svg": "a8386b05c91821c04c878214ffa74e0b394d2732b55702c4ca9a797d0d43a638",
+    "docs/diagrams/10-functional-flow.excalidraw": "9ec3dab1fadf1332b3b68fd0b225a66c37b8051dec5502d43c4846fdaf81620d",
+    "docs/diagrams/11-trust-boundaries.excalidraw": "e462230ffc40ea441f3993047e0cabf7efacf6b88a7857d77bbde42a8b302042",
+    "docs/diagrams/12-audit-governance.png": "5613e41ecb48bf49e76d7739167b9ad197f9993ea4661fc8a8477fb90dd819f0",
+    "docs/diagrams/12-audit-governance.puml": "ca2d747fa19184b473c048d5fb09652afb5661509ffbbb39fa194857204de626",
+    "docs/diagrams/12-audit-governance.svg": "29f287a9743eb435880472a66b87ba6a440f0f4134dfa9713373b5350f709fb3",
+    "docs/diagrams/README.md": "a9265d1f65b08aadaca6a5cad93a69377c2569dd884a2639dd6e91e75ddaa6ed",
+    "docs/multi-agent-proposal.md": "935c09492fc8d835da810fca1d87c59bd0c6fb6be8ad91b67c313e65a561da1a",
+    "docs/multi-agent-validation.md": "4241b6e02d1b0c7d5aa58f7d8b1334b78436452bb4a5378d50eea89d7b66d4d4",
+    "docs/security.md": "0abf85a84c39c8c18e1ed19bfbe3b0735405193fc146b06c930b7a695536ac70",
+    "docs/teaching.md": "dc31bff56a40a104a85ad96a5608e197679f201f39b651f0495033396cfdd5e7",
+    "features/chat_safety.feature": "bf1fcc5694269697bec25cb81c93f8a062f99a6f81d9dceb26057fc2b82bf4c9",
+    "features/circuit_breaker.feature": "dd5e263a1a01d452afd23e957052cb42fab4b21d7c923113b5038a7b43e67ad4",
+    "features/context_isolation.feature": "b436ce86a565f1c59aefdbb00ef52f3565ba575ffd0fe0f490edd403301a3e29",
+    "features/drinks_scope.feature": "854cb038a4e360908c0d371d728ab10ccd0abe3857bba142326356e231bd22c8",
+    "features/localization.feature": "47e2e5de1f070f39821a80f71830158b908d8720d91d5739898db57a6b3b94e0",
+    "features/multi_agent.feature": "5385ff5116ce4d5edb4b774313af3608614cb9bac24ca454afcde9cf788ba182",
+    "features/steps/chat_steps.py": "8baab3755d43d3da0482baae17570ba2bf039c44a9497f450e011c41897d5429",
+    "frontend/package-lock.json": "c43b7205f4234ad5bd0943b50d19ca8ef719de6f0ac066dff274b0b79639885d",
+    "frontend/package.json": "0595e146786858c95488ce4716b5da8b0ce010fec0509dce0e77fcaf5d573258",
+    "frontend/src/App.jsx": "ad5059844a200afb93955ddf2dc167bcf7a763212d7be57609101045cceb16ad",
+    "frontend/src/i18n.js": "ebf4ecaf5ead4aba741c35447769ac56dc10f34ee1be736c64efe14c9589de20",
+    "frontend/src/main.jsx": "3d73feae7a88344f4c9260a149ce0d50e00c7390232f566ec761171d747add79",
+    "frontend/src/style.css": "50d94b6cdc488bf36c94f40b86e5e593509e93748856f46d06bbc5b39e26ff65",
+    "frontend/tests/i18n.test.js": "a8ce052568d1acc5ba3743e29dc937a86dc34dee5bea32cc3f674774e84846d4",
+    "pyproject.toml": "c2a8d2f318bfc44c786abb67eabd7c4ede642f4255b8bd8475f245376f95141c",
+    "scripts/check_commit_message.py": "89d08cc86b58c9ac488402a8610d640096cbf091558c65853bb3763e088e5595",
+    "scripts/start.sh": "d17f44043a4692466655587a4c8a5639b208f3bc3abeca695f7938ee2d88e50b",
+    "src/agentic_chat/__init__.py": "3a878bc8f11485e6142ac6aabbb54c53c99cdcb6555dcc2bf5eae32823d92c07",
+    "src/agentic_chat/auditing.py": "164bd3560d6b9c7843407f6b495f0fef941036c1264325a9c9651b3406f122de",
+    "src/agentic_chat/cli.py": "6412efaf8edea8bb2cc4b833fa74c6228e2440e3f4da85ea15f1a74ad5f85ede",
+    "src/agentic_chat/context.py": "a7b6628458d4ab38de8faa8d9091f8513996a5bcb38e608b24aae89c0110d7a4",
+    "src/agentic_chat/eval_audit.json": "6b944c18fec54a60f1080fba8a025a86c7fa12906f349b987fce068c07efe18b",
+    "src/agentic_chat/eval_cases.json": "367cafdee61b901457cc0a0f6dab2dcbcad2364a04a4498a3c444ea0763d8963",
+    "src/agentic_chat/eval_holdout.json": "c63467ed7f007865c3cb5450ba94031284413958129e5f8e8667be2723740c5d",
+    "src/agentic_chat/eval_localization.json": "f606b6e7e72de97236634c807fe8251892d046121824d7722fa8b7e7c542c8a4",
+    "src/agentic_chat/evaluation.py": "a5b866b0417d05a23efc157bc69b0488abe1e102326ee97da97918056bafeeb8",
+    "src/agentic_chat/localization.py": "a71d9ecb2f58a4b005d9af5771557b46e7f4c20ae714d856df80d8dbf8908b51",
+    "src/agentic_chat/policy.json": "7006b349819a8fe77f50405128ec10b2e82eafacc9f8a8f08818f6456510209d",
+    "src/agentic_chat/policy.py": "3b4c5621af7f28aa9b0f26a19fc5a951b68e730d4a674f33fe4df71cb99ddc4d",
+    "src/agentic_chat/providers.py": "07d382a9bd7b7f91dcbf297428eb8bb590bdf44a233413a807eacbbbe6bf1cc6",
+    "src/agentic_chat/resilience.py": "1ba28b475bd4a5b963e0ef2e609ba034cd96e5760e3de25e44e4711690688d44",
+    "src/agentic_chat/testing.py": "d16afa203d320d4751aba5cab45f78d08eb5895a5e18cfc1ec33a65c0771cebb",
+    "src/agentic_chat/web.py": "015b3cea7196cde1d35f892d4c92ffc148bcf1b02f75d09fedaffbc519d7cc58",
+    "src/agentic_chat/workflow.py": "5238fb63874ef0677cd89c60d402c972246c42a9fde07d47d657342a217d38af",
+    "tests/test_agents.py": "84bcdb2f060585a706bc5111949354f40019748abde3fc048eb9a0a7130fe0f4",
+    "tests/test_auditing.py": "a373129f82bb2eb66e4647568dd517a852a6cad3f2c5e397858fcf60e06bfb3d",
+    "tests/test_drinks_scope.py": "987f40e60210d69a42e91e64b293ae7e5f37ca5b5d2413f88eee7e9a8cec3f14",
+    "tests/test_evaluation_cli.py": "9cbefcb5a9c122ff2eb4875d67b5764e46268cdc871b396e9114a4fe512187a2",
+    "tests/test_governance.py": "80fefcfcea9d115e45e1c9dd34e8d0b7584133c5e75f2f39e49db5a73ccec4b4",
+    "tests/test_policy.py": "ad430f199ed8e3394b33dcd7fccdee3ca9988f2935d84043b45c7c12660077c9",
+    "tests/test_providers.py": "9f13ab1eadf443aa3734fe37a4f239ad311cf516e7f3dc41710860fdcfee649e",
+    "tests/test_resilience.py": "1291dac52467828bb7faa30dd3b0e2bdc76c7e67fa05a5b32b3c60e1de01cb1e",
+    "tests/test_web.py": "f19c291348a648e3398b01ac1cde39c93d67a984b7b83ff5c6c9b6332d250bf0",
+    "tests/test_workflow.py": "07ac0f858c60eadb3fe4cf5e9d2471317ea48c241573b7a475dff4a3a63c124f",
+    "uv.lock": "b466bb5a7c92d1a9442d0801999ca8ec08ec1986d11efd169986df3bbc106286"
+  },
+  "report_sha256": {
+    "baseline-live-conversation.json": "87cbc9d4247c57afc87558a8b39855721ec12088b8e2dc39adad3fa163377f07",
+    "first-live-audit.json": "8dce3911b2d71f7a50b8e18f8a91f0cd19f5a8feece8b2bf967b563906c245c1",
+    "first-live-holdout.json": "ea2486a4cd151f6bdf83a2da3b1726a8e6bed4a9850147664bfab5bb54e8e9b9",
+    "first-live-localization.json": "02fd7d246da7d5904dd37662cefd57a29b485cb950e928cf3cca202f803580a7",
+    "first-live-regression.json": "67524894fff2afae9d9dbb2f850e92ce4f7e0b13bb202707a260d0082737a94a",
+    "live-audit.json": "b1337e3d4ec1c80925a6de0761932cc98be3005d511dbfe748849a5046ae8dc8",
+    "live-audited-chat.json": "b87e9745f4d0db012f1d4d5885558df3e9a80154f371cbd6786edaf12fef5dc6",
+    "live-conversation.json": "a174e8addb0a3df4929ec01aa8710779fca20d8764e5d86c5d2499964457b4ed",
+    "live-holdout.json": "68ede34f9cb570cd6c730a49056aace7cc5bf4a757487fa5496b02ca8c9dc7c8",
+    "live-localization.json": "69a1d25e81cc4c2c67f0b2778ca7f0d442ad03f5298115e282cafe9b897e448c",
+    "live-regression.json": "ad53c52e07ed52628c56f1112301dc849e6bf56d8efa949e84412fba90a8a1bd",
+    "offline-holdout.json": "a1a868a9309f5a2f3ce19a02bd13d992a06aa431128ce05f2f0082acd18eef72",
+    "offline-localization.json": "a46bdcc32da503cd825c17043909740d5f7b38e0ef78664905fdb6ff9bb40eae",
+    "offline-regression.json": "e49d9f3817d2e8cd95386a93bde6b4375d0692435a9849d232fe821fe2b69244"
+  },
+  "raw_junit_sha256": {
+    "pytest": "326b279fd987d5d38646c0f9ddff52008215dc3f82b5ff4398f2b21c1313d87a",
+    "TESTS-multi_agent.xml": "2e3be801967a69fb9efcabf46315ddf502c3f3c17a694955cd45f604fd52dbb8",
+    "TESTS-circuit_breaker.xml": "578cb35279f90faa07f04d0cf627246bd3570dc9cc1e658d7edadd23c544c13a",
+    "TESTS-drinks_scope.xml": "9ac1278143980125e810a4ff0c184099e68f5654c2b1a7179eb42ef22fe25943",
+    "TESTS-chat_safety.xml": "ec917f5e0ff8861ba4137589583fb52235a2d28d22fbf8980098c78abbd41acf",
+    "TESTS-localization.xml": "4d61868bd3f41b6e4fe39c6ec8f96e4662597d78cd53dd7e5fb12db8b769a188",
+    "TESTS-context_isolation.xml": "d4d5465294bb16664b0d3dcd72fbec78cee404d19b8ec6d40f5fec0ae1b394e7"
+  },
+  "baseline_commit_scope": "Pre-refactor deterministic baseline and live conversation comparison. first-live reports are the first multi-agent implementation before rubric clarification."
+}

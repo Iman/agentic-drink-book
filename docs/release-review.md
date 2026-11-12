@@ -1,17 +1,19 @@
-# Release review
+# Release review: policy 2.0.0
+
+This is the historical pre-publication review. See [multi-agent validation](multi-agent-validation.md) for policy 2.1.0 and the auditor extension.
 
 What this change does: The repository provides a local drinks chatbot with English and Persian interfaces. This release adds bilingual setup documentation and records the security review before public publication.
 
 ## Must fix before relying on recipe accuracy
 
-1. **The judge can approve an incorrect recipe.** See [output decisions](../src/agentic_chat/policy.py#L197) and [model selection](../src/agentic_chat/providers.py#L165).
+1. **The judge can approve an incorrect recipe.** See [output decisions](https://github.com/Iman/agentic-drink-book/blob/a10a9c1aef033b6d2cc08209989cb8b16e5210ab/src/agentic_chat/policy.py#L197) and [model selection](https://github.com/Iman/agentic-drink-book/blob/a10a9c1aef033b6d2cc08209989cb8b16e5210ab/src/agentic_chat/providers.py#L165).
 
    - **What this is:** The output judge supplies safety flags and quality scores. Application code uses these values to accept or reject the draft.
    - **Problem:** The recorded Persian Negroni case received an accepted answer but failed its ingredient check. Generation and judging used the same model.
    - **Fix:** Add reviewed recipe references and independent ingredient checks for named recipes. Rerun the failing fixture before claiming recipe accuracy.
    - **If we skip it:** Users can receive incorrect recipes after every gate passes. **NOT FIXED:** this release documents the failure without changing model behavior.
 
-**VERIFIED historical evidence:** [The localization run](evidence/i18n/localization-live.json) recorded seven passes and one failure on 2026-11-11. The current source matches every source hash in [that validation summary](evidence/i18n/validation-summary.json). This review did not repeat live inference.
+**VERIFIED historical evidence:** [The localization run](evidence/i18n/localization-live.json) recorded seven passes and one failure on 2026-11-11. At that review, source hashes matched [that validation summary](evidence/i18n/validation-summary.json). The review did not repeat live inference. Those hashes do not describe the later multi-agent refactor.
 
 ## VERIFIED checks
 

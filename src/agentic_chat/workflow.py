@@ -17,6 +17,7 @@ from agentic_chat.policy import (
     InputEvidence,
     OutputEvidence,
     Policy,
+    Specialist,
     input_decision,
     output_decision,
     screen,
@@ -51,6 +52,7 @@ class Result:
     policy_digest: str
     elapsed_ms: float
     stages: tuple[str, ...]
+    specialist: Specialist | None
 
 
 class Chatbot:
@@ -67,7 +69,8 @@ class Chatbot:
             ("input_rules", self._input_rules),
             ("load_context", self._load_context),
             ("input_judge", self._input_judge),
-            ("generate", self._generate),
+            ("mixing", self._mixing),
+            ("production", self._production),
             ("output_rules", self._output_rules),
             ("output_judge", self._output_judge),
             ("commit", self._commit),
@@ -75,12 +78,24 @@ class Chatbot:
         for name, handler in nodes:
             graph.add_node(name, handler)
         graph.add_edge(START, nodes[0][0])
-        for (name, _), (next_name, _) in zip(nodes, nodes[1:], strict=False):
+        for name, next_name in (
+            ("input_rules", "load_context"),
+            ("load_context", "input_judge"),
+            ("mixing", "output_rules"),
+            ("production", "output_rules"),
+            ("output_rules", "output_judge"),
+            ("output_judge", "commit"),
+        ):
             graph.add_conditional_edges(
                 name,
                 lambda state: "stop" if state.get("reason") else "next",
                 {"stop": END, "next": next_name},
             )
+        graph.add_conditional_edges(
+            "input_judge",
+            lambda state: "stop" if state.get("reason") else state["evidence"].specialist,
+            {"stop": END, "mixing": "mixing", "production": "production"},
+        )
         graph.add_edge("commit", END)
         # No checkpointer: raw inputs, drafts, and judge responses must not be persisted.
         self._graph = graph.compile()
@@ -103,10 +118,13 @@ class Chatbot:
         context = dict(state["context"])
         if evidence.name_candidate is not None:
             context["display_name"] = evidence.name_candidate
+        reason = input_decision(evidence, state["message"], self.policy)
+        if reason is None and evidence.specialist is None:
+            raise ValueError("Missing specialist classification")
         return {
             "evidence": evidence,
             "context": context,
-            "reason": input_decision(evidence, state["message"], self.policy),
+            "reason": reason,
         }
 
     def _load_context(self, state: TurnState, runtime: Runtime[TurnContext]):
@@ -114,14 +132,23 @@ class Chatbot:
         context = self.store.bundle(runtime.context.principal, runtime.context.session_id)
         return {"context": context}
 
-    async def _generate(self, state: TurnState, runtime: Runtime[TurnContext]):
-        runtime.context.stages.append("generate")
+    async def _mixing(self, state: TurnState, runtime: Runtime[TurnContext]):
+        return await self._generate(state, runtime, "mixing")
+
+    async def _production(self, state: TurnState, runtime: Runtime[TurnContext]):
+        return await self._generate(state, runtime, "production")
+
+    async def _generate(
+        self, state: TurnState, runtime: Runtime[TurnContext], specialist: Specialist
+    ):
+        runtime.context.stages.append(specialist)
         candidate = await self.models.respond(
             {
                 **state["context"],
                 "message": state["message"],
                 "response_language": runtime.context.language,
-            }
+            },
+            specialist=specialist,
         )
         return {"candidate": candidate}
 
@@ -185,7 +212,8 @@ class Chatbot:
             if reason != "accepted":
                 status = (
                     "neutral"
-                    if reason in {"unsuitable_name", "uncertain_name"} and "generate" not in stages
+                    if reason in {"unsuitable_name", "uncertain_name"}
+                    and not {"mixing", "production"}.intersection(stages)
                     else "blocked"
                 )
         except AccessDenied as error:
@@ -220,6 +248,7 @@ class Chatbot:
             self.policy.digest,
             round((time.monotonic() - started) * 1000, 3),
             tuple(stages),
+            next((name for name in ("mixing", "production") if name in stages), None),
         )
         event = asdict(result)
         del event["reply"]
